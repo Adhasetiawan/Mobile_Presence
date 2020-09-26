@@ -8,6 +8,8 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import org.koin.dsl.module
 
+
+//respository masuk sini
 val appModule = module {
     factory { GroupAdapter<ViewHolder>() }
     single<SchedulerProvider> { AppSchedulerProvider() }
