@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.mobilepresence.R
-import com.example.mobilepresence.login.LoginActivity
+import com.example.mobilepresence.view.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class SplashScreen : AppCompatActivity() {
@@ -12,8 +12,8 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        logo.alpha = 0f
-        logo.animate().setDuration(1500).alpha(1f).withEndAction {
+        placer.alpha = 0f
+        placer.animate().setDuration(1500).alpha(1f).withEndAction {
             val i = Intent(this, LoginActivity::class.java)
             startActivity(i)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

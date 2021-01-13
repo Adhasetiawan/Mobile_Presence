@@ -1,4 +1,4 @@
-package com.example.mobilepresence.login
+package com.example.mobilepresence.view.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -5,12 +5,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash_wallpaper"
     tools:context=".view.SplashScreen">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:background="@drawable/splash_screen"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <RelativeLayout
+        android:id="@+id/placer"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:background="@drawable/presence_logo"
+            android:layout_centerVertical="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+
+        <TextView
+            android:id="@+id/app_title"
+            android:text="Mobile Presence"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/logo"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/app_quote"
+            android:text="Every second is count"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_toRightOf="@id/logo"
+            android:layout_below="@id/app_title"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+
 
 </RelativeLayout>
