@@ -14,8 +14,10 @@
         android:textStyle="normal"
         android:textSize="15sp"
         android:textColor="#000"
-        android:layout_marginTop="80dp"
-        android:layout_marginLeft="70dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -25,12 +27,13 @@
         android:textStyle="bold"
         android:textSize="25sp"
         android:textColor="#000"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/txt1"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="70dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    
+
     <RelativeLayout
         android:id="@+id/login_placer"
         android:layout_centerHorizontal="true"
@@ -71,13 +74,15 @@
             android:layout_height="wrap_content"/>
 
     </RelativeLayout>
-    
+
     <Button
         android:id="@+id/btn_login"
         android:text="Log in"
+        android:textAllCaps="false"
         android:layout_below="@+id/login_placer"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="64dp"
+        android:layout_marginStart="40dp"
+        android:layout_alignParentStart="true"
         android:background="@drawable/button_style_one"
         android:layout_width="190dp"
         android:layout_height="36dp"/>
