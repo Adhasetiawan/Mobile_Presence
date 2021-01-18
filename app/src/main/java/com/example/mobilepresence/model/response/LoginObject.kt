@@ -1,6 +1,6 @@
 package com.example.mobilepresence.model.response
 
-object LoginResponse {
+object LoginObject {
 
     data class LoginResponse(
         val data_user: DataUser,

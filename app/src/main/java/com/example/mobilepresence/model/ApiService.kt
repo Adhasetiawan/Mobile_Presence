@@ -1,6 +1,6 @@
 package com.example.mobilepresence.model
 
-import com.example.mobilepresence.model.response.LoginResponse
+import com.example.mobilepresence.model.response.LoginObject
 import io.reactivex.Single
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -13,5 +13,5 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String,
         @Field("imei") imei: Int,
-    ) : Single<LoginResponse.LoginResponse>
+    ) : Single<LoginObject.LoginResponse>
 }
