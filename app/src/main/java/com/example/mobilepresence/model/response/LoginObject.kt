@@ -12,6 +12,7 @@ object LoginObject {
     data class DataUser(
         val id_user: Int,
         val username: String,
+        val email: String,
         val name: String,
         val division: String,
         val address: String,
