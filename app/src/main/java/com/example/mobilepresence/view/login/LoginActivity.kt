@@ -89,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
                 is UiState.Success -> {
                     loading.dismiss()
 
-                    toast("Welcome")
+                    toast("Welcome " + it.data.data_user.name)
 
                     viewmodel.loginStatus()
 
