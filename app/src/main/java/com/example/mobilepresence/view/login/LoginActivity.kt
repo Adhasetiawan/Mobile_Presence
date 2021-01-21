@@ -17,9 +17,10 @@ import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityLoginBinding
+    private lateinit var binding: ActivityLoginBinding
 
     private val viewmodel: LoginViewmodel by inject()
 
@@ -28,15 +29,23 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(viewmodel.isLogin()){
+        if (viewmodel.isLogin()) {
             startActivity<BottomNavActivity>()
             finish()
         }
 
-            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_PHONE_STATE),111)
-            else
-                loginproses()
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_PHONE_STATE
+            ) != PackageManager.PERMISSION_GRANTED
+        )
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_PHONE_STATE),
+                111
+            )
+        else
+            loginproses()
 
 
     }
@@ -47,13 +56,13 @@ class LoginActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 111 && grantResults [0] == PackageManager.PERMISSION_GRANTED)
+        if (requestCode == 111 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             loginproses()
     }
 
     private fun loginproses() {
 
-        var tm : TelephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        var tm: TelephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -69,9 +78,9 @@ class LoginActivity : AppCompatActivity() {
         loading.setMessage("Log in...")
 
         viewmodel.getLoginResponse().observe(this, Observer {
-            when(it){
+            when (it) {
                 is UiState.Loading -> loading.show()
-                is UiState.Success ->{
+                is UiState.Success -> {
                     loading.dismiss()
 
                     toast("Selamat Datang " + it.data.data_user.name)
@@ -96,11 +105,15 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        binding.btnLogin.setOnClickListener{
-            if (binding.edtUsername.text.isBlank() && binding.edtPassword.text.isBlank()){
+        binding.btnLogin.setOnClickListener {
+            if (binding.edtUsername.text.isBlank() && binding.edtPassword.text.isBlank()) {
                 toast("Your data is empty!")
-            }else {
-                viewmodel.login(binding.edtUsername.text.toString(), binding.edtPassword.text.toString(), data.toBigInteger())
+            } else {
+                viewmodel.login(
+                    binding.edtUsername.text.toString(),
+                    binding.edtPassword.text.toString(),
+                    data.toBigInteger()
+                )
             }
         }
     }

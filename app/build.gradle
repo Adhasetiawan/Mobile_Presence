@@ -16,7 +16,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         //nanti berubah
-        buildConfigField "String", "BASE_URL", "\"http://192.168.1.12:4500/\""
+        buildConfigField "String", "BASE_URL", "\"http://192.168.1.18:4500/\""
+
     }
 
     buildFeatures {
@@ -122,4 +123,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
 
+    //bottomnav
+    implementation 'com.google.android.material:material:1.2.1'
 }
