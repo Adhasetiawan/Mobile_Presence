@@ -31,7 +31,7 @@ class LoginRepository (val apiService : ApiService, val sharedPreferance : Share
 
     //savePict
     fun savePict(pict : String?){
-        sharedPreferance.photo_profile
+        sharedPreferance.photo_profile = pict
     }
 
     fun saveResponse (name : String?, id: Int?, division: String?){

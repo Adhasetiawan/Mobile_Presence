@@ -4,18 +4,22 @@ import android.Manifest
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.telephony.TelephonyManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import com.example.mobilepresence.databinding.ActivityLoginBinding
 import com.example.mobilepresence.model.UiState
+import com.example.mobilepresence.util.InputCheck
+import com.example.mobilepresence.util.Utils
 import com.example.mobilepresence.view.bottomnav.BottomNavActivity
 import com.example.mobilepresence.viewmodel.LoginViewmodel
+import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
+import retrofit2.HttpException
 import timber.log.Timber
 
 class LoginActivity : AppCompatActivity() {
@@ -62,6 +66,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginproses() {
 
+        val loading = ProgressDialog(this)
+        loading.setMessage("Log in...")
+
+
         var tm: TelephonyManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
 
         if (ActivityCompat.checkSelfPermission(
@@ -74,8 +82,6 @@ class LoginActivity : AppCompatActivity() {
 
         var data = tm.deviceId
 
-        val loading = ProgressDialog(this)
-        loading.setMessage("Log in...")
 
         viewmodel.getLoginResponse().observe(this, Observer {
             when (it) {
@@ -83,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
                 is UiState.Success -> {
                     loading.dismiss()
 
-                    toast("Selamat Datang " + it.data.data_user.name)
+                    toast("Welcome")
 
                     viewmodel.loginStatus()
 
@@ -98,17 +104,28 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 }
                 is UiState.Error -> {
-                    loading.dismiss()
-                    toast("Terjadi kesalahan")
+                    if (it.throwable is HttpException) {
+                        if (it.throwable.code() == 404) {
+                            binding.btnLogin.snackbar(
+                                Utils.getErrorMessage(
+                                    it.throwable.response()?.errorBody()
+                                )
+                            )
+                            loading.dismiss()
+                        } else {
+                            binding.btnLogin.snackbar(it.throwable.message())
+                        }
+                    }
                     Timber.tag("Error tag -> ").e("Kesalahan pada -> " + it)
+                    }
                 }
-            }
         })
 
         binding.btnLogin.setOnClickListener {
             if (binding.edtUsername.text.isBlank() && binding.edtPassword.text.isBlank()) {
                 toast("Your data is empty!")
             } else {
+                inputCheck()
                 viewmodel.login(
                     binding.edtUsername.text.toString(),
                     binding.edtPassword.text.toString(),
@@ -117,5 +134,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-}
 
+    private fun inputCheck(): Boolean {
+        val emailcheck = InputCheck.validationEmail(binding.edtUsername, "Incorrect Email")
+        val passcheck = InputCheck.validationPassword(binding.edtPassword, "Incorrect Password")
+        return emailcheck && passcheck
+    }
+}

@@ -14,11 +14,11 @@ object Utils {
         }
     }
 
-
-    fun View.visible(){
+    fun View.visible() {
         this.visibility = View.VISIBLE
     }
-    fun View.gone(){
+
+    fun View.gone() {
         this.visibility = View.GONE
     }
 }

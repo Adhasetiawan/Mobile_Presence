@@ -16,6 +16,7 @@ class BottomNavActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.bottomnav.setOnNavigationItemSelectedListener(bottnavSelectedListener)
+        binding.bottomnav.selectedItemId = R.id.nav_home
 
     }
 
