@@ -3,7 +3,9 @@ package com.example.mobilepresence.view.login
 import android.Manifest
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.telephony.TelephonyManager
 import androidx.appcompat.app.AppCompatActivity
@@ -51,7 +53,16 @@ class LoginActivity : AppCompatActivity() {
         else
             loginproses()
 
+        // send email akan menyesuikan diakahir
+        binding.intentForgetPass.setOnClickListener {
+            val sendEmailto :String = "Adhawiyana@gmail.com".toString().trim()
+            val subjectEmail :String = "Admin call".toString().trim()
+            val messageEmail :String = ("Good night\n" +
+                                        "This Massage only for testing purpose\n"+
+                                        "So let see how it's gonna be!").toString().trim()
 
+            contactAdmin(sendEmailto, subjectEmail, messageEmail)
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -117,8 +128,8 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                     Timber.tag("Error tag -> ").e("Kesalahan pada -> " + it)
-                    }
                 }
+            }
         })
 
         binding.btnLogin.setOnClickListener {
@@ -139,5 +150,18 @@ class LoginActivity : AppCompatActivity() {
         val emailcheck = InputCheck.validationEmail(binding.edtUsername, "Incorrect Email")
         val passcheck = InputCheck.validationPassword(binding.edtPassword, "Incorrect Password")
         return emailcheck && passcheck
+    }
+
+    private fun contactAdmin(sendTo : String, subjectEmail : String, message: String){
+        val mIntent = Intent(Intent.ACTION_SEND)
+
+        mIntent.data = Uri.parse("mailTo : ")
+        mIntent.type = "text/plain"
+
+        mIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(sendTo))
+        mIntent.putExtra(Intent.EXTRA_SUBJECT, subjectEmail)
+        mIntent.putExtra(Intent.EXTRA_TEXT, message)
+
+        startActivity(Intent.createChooser(mIntent, "Choose Email client..."))
     }
 }
