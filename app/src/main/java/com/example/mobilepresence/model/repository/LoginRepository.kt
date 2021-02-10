@@ -34,10 +34,11 @@ class LoginRepository (val apiService : ApiService, val sharedPreferance : Share
         sharedPreferance.photo_profile = pict
     }
 
-    fun saveResponse (name : String?, id: Int?, division: String?){
+    fun saveResponse (name : String?, id: Int?, division: String?, role : String?){
         sharedPreferance.nameUser = name
         sharedPreferance.idUser = id
         sharedPreferance.divisionUser = division
+        sharedPreferance.roleUser = role
     }
 
     //profilegetter
@@ -45,6 +46,7 @@ class LoginRepository (val apiService : ApiService, val sharedPreferance : Share
     fun getId () = sharedPreferance.idUser
     fun getDivision() = sharedPreferance.divisionUser
     fun getPict() = sharedPreferance.photo_profile
+    fun getRole() = sharedPreferance.roleUser
 
     //sharedpreference clear
     fun cleanpref (){

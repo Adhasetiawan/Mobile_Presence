@@ -49,8 +49,8 @@ class LoginViewmodel (private val loginRepository: LoginRepository, private val 
         loginRepository.savePict(pictUrl)
     }
 
-    fun saveResponse (name: String?, id: Int?, division: String?){
-        loginRepository.saveResponse(name, id, division)
+    fun saveResponse (name: String?, id: Int?, division: String?, role: String?){
+        loginRepository.saveResponse(name, id, division, role)
     }
 
     override fun onCleared() {

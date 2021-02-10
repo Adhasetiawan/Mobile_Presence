@@ -109,7 +109,8 @@ class LoginActivity : AppCompatActivity() {
                     viewmodel.saveResponse(
                         it.data.data_user.name,
                         it.data.data_user.id_user,
-                        it.data.data_user.division
+                        it.data.data_user.division,
+                        it.data.data_user.role
                     )
                     startActivity<BottomNavActivity>()
                     finish()
