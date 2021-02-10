@@ -2,13 +2,22 @@ package com.example.mobilepresence.view.bottomnav
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.example.mobilepresence.R
 import com.example.mobilepresence.databinding.ActivityBottomNavBinding
+import com.example.mobilepresence.view.home.HomeFragment
+import com.example.mobilepresence.view.profile.ProfileFragment
+import com.example.mobilepresence.view.trackrecord.TrackRecordFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BottomNavActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBottomNavBinding
+
+    private val homeFrag = HomeFragment()
+    private val trackRecFrag = TrackRecordFragment()
+    private val profileFrag = ProfileFragment()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,23 +25,30 @@ class BottomNavActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.bottomnav.setOnNavigationItemSelectedListener(bottnavSelectedListener)
-        binding.bottomnav.selectedItemId = R.id.nav_home
 
+        currentpage(homeFrag)
+    }
+
+    private fun currentpage(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_placer, fragment)
+            commit()
+        }
     }
 
     private val bottnavSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    binding.sample.text = "Home!"
+                    currentpage(homeFrag)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_tc -> {
-                    binding.sample.text = "Track Record!"
+                    currentpage(trackRecFrag)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_profile -> {
-                    binding.sample.text = "Profile"
+                    currentpage(profileFrag)
                     return@OnNavigationItemSelectedListener true
                 }
             }

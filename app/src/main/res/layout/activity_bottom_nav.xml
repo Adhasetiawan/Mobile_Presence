@@ -6,14 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".view.bottomnav.BottomNavActivity">
 
-    <TextView
-        android:id="@+id/sample"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="User cannot see this"
-        android:textColor="#000000"
-        android:textSize="20sp" />
+    <FrameLayout
+        android:id="@+id/fragment_placer"
+        android:layout_above="@id/bottomnav"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomnav"
