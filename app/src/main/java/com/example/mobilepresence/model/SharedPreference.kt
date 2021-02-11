@@ -2,6 +2,7 @@ package com.example.mobilepresence.model
 
 import android.content.Context
 import android.content.SharedPreferences
+import kotlin.random.Random
 
 class SharedPreference(val context: Context) {
 
@@ -10,7 +11,7 @@ class SharedPreference(val context: Context) {
 
     private val KEY_ACCESS_TOKEN = "access_token"
     private val KEY_IS_LOGIN = "is_login"
-    private val KEY_ID = "id"
+    private val KEY_ID = "id_user"
     private val KEY_USERNAME = "username"
     private val KEY_EMAIL = "email"
     private val KEY_NAME = "name"
@@ -31,7 +32,7 @@ class SharedPreference(val context: Context) {
 
     var idUser : Int?
         get() = mPref.getInt(KEY_ID, Int.MAX_VALUE)
-        set(value) = mPref.edit().putInt(KEY_ID, Int.MAX_VALUE).apply()
+        set(value) = mPref.edit().putInt(KEY_ID, value!!).apply()
 
     var userName : String?
         get() = mPref.getString(KEY_USERNAME, null)

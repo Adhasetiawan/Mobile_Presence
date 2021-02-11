@@ -14,10 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".view.passchange.PassChangeActivity"></activity>
         <activity
-            android:name="com.example.mobilepresence.view.login.LoginActivity"
-            android:theme="@style/CleanHead"></activity>
+            android:name=".view.login.LoginActivity"
+            android:theme="@style/CleanHead" />
         <activity
             android:name=".view.bottomnav.BottomNavActivity"
             android:theme="@style/CleanHead" />
