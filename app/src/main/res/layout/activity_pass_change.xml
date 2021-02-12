@@ -1,10 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.passchange.PassChangeActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/placer_pass_pict"
+        android:layout_width="106dp"
+        android:layout_height="210dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-30dp"
+        android:background="@drawable/placer_two">
+
+        <ImageView
+            android:id="@+id/prof_pict"
+            android:layout_width="96dp"
+            android:layout_height="102dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_baseline_person_24" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tittle_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/placer_pass_pict"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Reset My Password"
+        android:textColor="#000000"
+        android:textSize="27sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/sub_tittle_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tittle_pass"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Please enter and confirm your new password"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:id="@+id/placer_pass_input"
+        android:layout_width="287dp"
+        android:layout_height="151dp"
+        android:layout_below="@id/sub_tittle_pass"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/placer_one">
+
+        <EditText
+            android:id="@+id/pass_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:ems="11"
+            android:hint="New Password"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/pass_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pass_one"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:ems="11"
+            android:hint="New Password"
+            android:lines="1"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_confirm_change"
+        android:layout_below="@id/placer_pass_input"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Confirm Change"
+        android:background="@drawable/button_style_two"
+        android:textAllCaps="false"
+        android:layout_width="190dp"
+        android:layout_height="36dp"/>
+
+</RelativeLayout>
