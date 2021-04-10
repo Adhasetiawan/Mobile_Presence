@@ -3,92 +3,199 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f5f5f5"
+    android:orientation="vertical"
     tools:context=".view.profile.ProfileFragment">
+
+    <RelativeLayout
+        android:id="@+id/header_prof"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/placer_three">
+
+        <TextView
+            android:id="@+id/title_prof"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginTop="22dp"
+            android:text="Profile"
+            android:textColor="#ffffff"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title_prof"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="5dp"
+            android:text="Your personal and private information"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/profile_pict_placer"
+        android:layout_width="90dp"
+        android:layout_height="99dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="-50dp"
         android:background="@drawable/ic_baseline_person_24"
-        android:layout_width="100dp"
-        android:layout_height="110dp"/>
-    
+        android:scaleType="fitXY" />
+
+    <!--    Rekapan-->
     <RelativeLayout
-        android:id="@+id/info_placer"
-        android:background="@drawable/placer_one"
-        android:layout_below="@+id/profile_pict_placer"
-        android:layout_marginTop="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_width="287dp"
-        android:layout_height="277dp">
+        android:id="@+id/bearer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/profile_pict_placer"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="60dp">
 
-        <TextView
-            android:id="@+id/profileplacer"
-            android:text="My Profile"
-            android:textColor="#000000"
-            android:textSize="26sp"
-            android:textStyle="bold"
+        <!--    Name Frame-->
+        <RelativeLayout
+            android:id="@+id/name_placer"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/prof_name">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="Name"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:text="Adha_S"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <!--    ID Frame-->
+        <RelativeLayout
+            android:id="@+id/id_placer"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/name_placer"
+            android:background="@drawable/prof_id">
+
+            <TextView
+                android:id="@+id/id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="ID"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txt_IDuser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:text="10161008"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <!--    Divisi Frame-->
+        <RelativeLayout
+            android:id="@+id/divisi_placer"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@id/name_placer"
             android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:background="@drawable/prof_divisi">
 
-        <TextView
-            android:id="@+id/txt_name"
-            android:layout_below="@id/profileplacer"
-            android:text="Nama :"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/placer_divisi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="Divisi"
+                android:textAlignment="center"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/txt_divisi"
-            android:layout_below="@id/txt_name"
-            android:text="Divisi :"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txt_divisi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:text="Product Dept"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/txt_IDuser"
-            android:layout_below="@id/txt_divisi"
-            android:text="ID User :"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/txt_Tipeuser"
-            android:layout_below="@id/txt_IDuser"
-            android:text="Tipe :"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <!--    Role Frame-->
+        <RelativeLayout
+            android:id="@+id/id_role"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@id/name_placer"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/name_placer"
+            android:background="@drawable/prof_role">
+
+            <TextView
+                android:id="@+id/role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text="Role"
+                android:textAlignment="center"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txt_Tipeuser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+                android:text="Staff"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
     <Button
         android:id="@+id/btn_change_pass"
-        android:layout_below="@id/info_placer"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bearer"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Change Password"
+        android:layout_marginTop="10dp"
         android:background="@drawable/button_style_two"
+        android:text="Ubah kata sandi"
+        android:textSize="16sp"
         android:textAllCaps="false"
-        android:layout_width="190dp"
-        android:layout_height="36dp"/>
+        android:textColor="#7d7d7d"
+        android:textStyle="bold" />
 
-    
 </RelativeLayout>

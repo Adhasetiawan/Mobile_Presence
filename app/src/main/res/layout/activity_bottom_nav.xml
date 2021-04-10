@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@drawable/botnav_style"
-        android:layout_margin="5dp"
         app:itemIconTint="#000000"
         app:itemTextColor="#000000"
         app:menu="@menu/nav_menu" />

@@ -24,10 +24,10 @@ class ProfileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         binding.profilePictPlacer.loadImageFromUrl(BuildConfig.BASE_URL+"uploads/"+vm.getPict())
-        binding.txtName.text = "Nama : " + vm.getName()
-        binding.txtDivisi.text = "Divisi : " + vm.getDivision()
-        binding.txtIDuser.text = "ID User : " + vm.getIdUser()?.toString()
-        binding.txtTipeuser.text = "Tipe : " + vm.getRole()
+        binding.txtName.text = vm.getName()
+        binding.txtDivisi.text = vm.getDivision()
+        binding.txtIDuser.text = vm.getIdUser()?.toString()
+        binding.txtTipeuser.text = vm.getRole()
 
         binding.btnChangePass.setOnClickListener {
             startActivity(Intent(context, PassChangeActivity::class.java))
