@@ -23,6 +23,8 @@ class ProfileFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val intent = Intent (requireContext(), PassChangeActivity::class.java)
+
         binding.profilePictPlacer.loadImageFromUrl(BuildConfig.BASE_URL+"uploads/"+vm.getPict())
         binding.txtName.text = vm.getName()
         binding.txtDivisi.text = vm.getDivision()
@@ -30,7 +32,8 @@ class ProfileFragment : Fragment() {
         binding.txtTipeuser.text = vm.getRole()
 
         binding.btnChangePass.setOnClickListener {
-            startActivity(Intent(context, PassChangeActivity::class.java))
+            intent.putExtra("id_user", binding.txtIDuser.text)
+            startActivity(intent)
         }
     }
 
