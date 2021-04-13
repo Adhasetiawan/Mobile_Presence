@@ -21,7 +21,7 @@ interface ApiService {
     ) : Single<LoginObject.LoginResponse>
 
     //API Endpoint untuk fitur passchange
-    @PUT
+    @PUT ("auth/api/v1/updatepass")
     @FormUrlEncoded
     fun passchange(
         @Field("id_user") id_user : Int,

@@ -24,13 +24,16 @@ class PassChangeViewmodel (val passChangeRepository: PassChangeRepository, val s
 
     //Trigger API pada Passchange
     fun Passchange (id_user : Int, pass_one : String, pass_two : String){
+        //reponse ketika proses request sedang berjalan
         changeResponse.postValue(UiState.Loading(true))
         passChangeRepository.PassChange(id_user, pass_one, pass_two)
             .observeOn(schedulerProvider.ui())
             .subscribeOn(schedulerProvider.io())
             .subscribe({
+                //reponse ketika proses request berhasil
                 changeResponse.postValue(UiState.Success(it))
             },{
+                //reponse ketika proses request gagal
                 changeResponse.postValue(UiState.Error(it))
             }).addTo(compositeDisposables)
     }

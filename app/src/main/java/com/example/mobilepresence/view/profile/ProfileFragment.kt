@@ -33,6 +33,7 @@ class ProfileFragment : Fragment() {
 
         binding.btnChangePass.setOnClickListener {
             intent.putExtra("id_user", binding.txtIDuser.text)
+            intent.putExtra("image", vm.getPict())
             startActivity(intent)
         }
     }
