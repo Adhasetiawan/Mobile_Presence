@@ -20,6 +20,7 @@ class ProfileFragment : Fragment() {
 
     private val vm : ProfileViewModel by inject()
 
+    //this is where i put the codes
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
