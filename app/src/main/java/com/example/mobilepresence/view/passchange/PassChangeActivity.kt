@@ -3,6 +3,7 @@ package com.example.mobilepresence.view.passchange
 import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.example.mobilepresence.BuildConfig
 import com.example.mobilepresence.databinding.ActivityPassChangeBinding
@@ -13,6 +14,7 @@ import com.example.mobilepresence.view.bottomnav.BottomNavActivity
 import com.example.mobilepresence.viewmodel.PassChangeViewmodel
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import retrofit2.HttpException
 import timber.log.Timber
@@ -42,26 +44,12 @@ class PassChangeActivity : AppCompatActivity() {
                 }
                 is UiState.Success -> {
                     loading.dismiss()
-                    if (it.data.status == 200){
-                        binding.btnConfirmChange.snackbar(
-                            "Passwsord berhasil diubah!"
-                        )
-                    }
+                    startActivity<BottomNavActivity>()
+                    finish()
                 }
                 is UiState.Error -> {
-                    if (it.throwable is HttpException){
-                        if (it.throwable.code() == 404 || it.throwable.code() == 406){
-                            binding.btnConfirmChange.snackbar(
-                                Utils.getErrorMessage(
-                                    it.throwable.response()?.errorBody()
-                                )
-                            )
-                            loading.dismiss()
-                        } else {
-                            binding.btnConfirmChange.snackbar(it.throwable.message())
-                        }
-                    }
-                    Timber.tag("Error tag -> ").e("Kesalahan pada -> " + it)
+                    loading.dismiss()
+                    toast("Password tidak berhasil diubah")
                 }
             }
         })
@@ -78,9 +66,11 @@ class PassChangeActivity : AppCompatActivity() {
 
         //Button click action untuk menjalankan API pada fitur Password Change
         binding.btnConfirmChange.setOnClickListener {
-            viewModel.Passchange(id_user, binding.passOne.text.toString(), binding.passTwo.text.toString())
-            startActivity<BottomNavActivity>()
-            finish()
+            if(binding.passOne.text.isEmpty() && binding.passTwo.text.isEmpty() ||binding.passOne.text.isEmpty() || binding.passTwo.text.isEmpty()){
+                toast("Password anda kosong")
+            }else{
+                viewModel.Passchange(id_user, binding.passOne.text.toString(), binding.passTwo.text.toString())
+            }
         }
     }
 }
