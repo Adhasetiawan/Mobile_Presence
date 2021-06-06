@@ -3,21 +3,16 @@ package com.example.mobilepresence.view.passchange
 import android.app.ProgressDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.example.mobilepresence.BuildConfig
 import com.example.mobilepresence.databinding.ActivityPassChangeBinding
 import com.example.mobilepresence.model.UiState
-import com.example.mobilepresence.util.Utils
 import com.example.mobilepresence.util.loadImageFromUrl
 import com.example.mobilepresence.view.bottomnav.BottomNavActivity
 import com.example.mobilepresence.viewmodel.PassChangeViewmodel
-import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
-import retrofit2.HttpException
-import timber.log.Timber
 
 class PassChangeActivity : AppCompatActivity() {
 
