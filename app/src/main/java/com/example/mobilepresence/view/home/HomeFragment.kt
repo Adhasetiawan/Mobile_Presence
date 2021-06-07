@@ -4,18 +4,23 @@ import android.app.ProgressDialog
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.liveData
 import com.example.mobilepresence.databinding.FragmentHomeBinding
 import com.example.mobilepresence.model.UiState
+import com.example.mobilepresence.model.persistablenetworkresourcecall.Resource
 import com.example.mobilepresence.viewmodel.PostViewmodel
 import com.google.android.gms.location.*
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 class HomeFragment : Fragment() {
 
@@ -30,9 +35,9 @@ class HomeFragment : Fragment() {
     //defult location value
     private var lat: Double = 0.0
     private var lng: Double = 0.0
+    var endlat = 0.0
+    var endlng = 0.0
 
-    private var endlat : Double= 0.0
-    private var endlng : Double= 0.0
 
     //layout
     private var _binding : FragmentHomeBinding? = null
@@ -43,27 +48,7 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         autolocate()
         relocate()
-        postact()
-
-        val loading = ProgressDialog(requireContext())
-        loading.setMessage("Your location is...")
-
-        viewmodel.getLocationResponse().observe(requireActivity(), Observer {
-            when(it){
-                is UiState.Loading -> {
-                    loading.show()
-                }
-                is UiState.Success -> {
-                    loading.dismiss()
-                    endlat = it.data.location.latitude
-                    endlng = it.data.location.longitude
-                }
-                is UiState.Error -> {
-                    loading.dismiss()
-                }
-            }
-        })
-        viewmodel.getLocation()
+        setact()
     }
 
     //mendekteksi lokasi secara otomatis dan terus menerus
@@ -157,16 +142,36 @@ class HomeFragment : Fragment() {
         locationRequest.smallestDisplacement = 10f
     }
 
-    //API trigger function
-    private fun postact(){
+    //fungsi utama pada fitur prensece dan absence
+    private fun setact(){
+        //ambil data lokasi yang dituju
+        viewmodel.getLocationResponse().observe(requireActivity(), Observer {
+            when(it){
+                is Resource.Loading -> {}
+                is Resource.Success -> {
+                    it.data!!.location.forEach{
+                        endlat = it.latitude
+                        endlng = it.longitude
+                    }
+                }
+                is Resource.Error -> {
+                    Timber.tag("cek pada ->").e("error pada => " + it)
+                    Toast.makeText(requireContext(), "Something wrong with the end point", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+        viewmodel.getLocation(1)
+
         binding.btnPreesnce.setOnClickListener {
-            if(binding.radioOffice.isChecked){
+            if (binding.radioOffice.isChecked){
                 Toast.makeText(requireContext(), "lat : " + endlat + " lng : " + endlng, Toast.LENGTH_SHORT).show()
+                binding.btnAbsence.visibility = View.VISIBLE
             }else if(binding.radioWfh.isChecked){
-                Toast.makeText(requireContext(), "ypur location is lat : " + lat + " lng : " + lng, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "your location mow at lat : " + lat + " lng : " + lng, Toast.LENGTH_SHORT).show()
             }
         }
     }
+
 
 
     //---fragment set up just ignore this---//

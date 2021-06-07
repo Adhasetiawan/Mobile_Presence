@@ -199,6 +199,7 @@
         <Button
             android:id="@+id/btn_absence"
             android:textAllCaps="false"
+            android:visibility="gone"
             android:text="Pulang"
             android:layout_marginStart="20dp"
             android:background="@drawable/button_style_two"

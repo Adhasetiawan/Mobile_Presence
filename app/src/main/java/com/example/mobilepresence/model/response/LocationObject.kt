@@ -3,7 +3,7 @@ package com.example.mobilepresence.model.response
 object LocationObject {
     data class LocationResponse(
         val Success: String,
-        val location: Location
+        val location: List<Location>
     )
 
     data class Location(

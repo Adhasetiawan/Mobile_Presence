@@ -43,8 +43,8 @@ interface ApiService {
     ): Single<PostObject.PostResponse>
 
     //API Endpoint untuk get location
-    @GET("getlocation")
+    @GET("getlocation/{id_location}")
     fun getLocation(
-        @Query ("id_location") id_location : Int = 1
+        @Path ("id_location") id_location : Int
     ) : Single<LocationObject.LocationResponse>
 }

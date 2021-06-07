@@ -28,7 +28,7 @@ class PostRepository(val apiService: ApiService) {
         )
     }
 
-    fun getLocation(): Single<LocationObject.LocationResponse> {
-        return apiService.getLocation()
+    fun getLocation(id_location: Int): Single<LocationObject.LocationResponse> {
+        return apiService.getLocation(id_location)
     }
 }

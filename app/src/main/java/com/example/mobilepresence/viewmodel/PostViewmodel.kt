@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mobilepresence.model.UiState
+import com.example.mobilepresence.model.persistablenetworkresourcecall.Resource
 import com.example.mobilepresence.model.repository.PostRepository
 import com.example.mobilepresence.model.response.LocationObject
 import com.example.mobilepresence.model.response.PostObject
@@ -52,22 +53,17 @@ class PostViewmodel(val postRepository: PostRepository, val schedulerProvider: S
             }, { postResponse.postValue(UiState.Error(it)) }).addTo(compositeDisposables)
     }
 
-    private val locationResponse: MutableLiveData<UiState<LocationObject.LocationResponse>> =
-        MutableLiveData()
+    private val locationResponse = MutableLiveData<Resource<LocationObject.LocationResponse>>()
 
-    fun getLocationResponse(): LiveData<UiState<LocationObject.LocationResponse>> {
-        return locationResponse
-    }
+    fun getLocationResponse() = locationResponse
 
-    fun getLocation() {
-        locationResponse.postValue(UiState.Loading(true))
-        postRepository.getLocation()
+    fun getLocation(id_location : Int) {
+        postRepository.getLocation(id_location)
             .observeOn(schedulerProvider.ui())
             .subscribeOn(schedulerProvider.io())
             .subscribe({
-                locationResponse.postValue(UiState.Success(it))
+                locationResponse.postValue(Resource.Success(it))
             }, {
-                locationResponse.postValue(UiState.Error(it))
             }).addTo(compositeDisposables)
     }
 }
