@@ -1,21 +1,17 @@
 package com.example.mobilepresence.view.home
 
-import android.app.ProgressDialog
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.liveData
 import com.example.mobilepresence.databinding.FragmentHomeBinding
-import com.example.mobilepresence.model.UiState
 import com.example.mobilepresence.model.persistablenetworkresourcecall.Resource
 import com.example.mobilepresence.viewmodel.PostViewmodel
 import com.google.android.gms.location.*
@@ -35,8 +31,8 @@ class HomeFragment : Fragment() {
     //defult location value
     private var lat: Double = 0.0
     private var lng: Double = 0.0
-    var endlat = 0.0
-    var endlng = 0.0
+    private var endlat = 0.0
+    private var endlng = 0.0
 
 
     //layout
@@ -164,8 +160,22 @@ class HomeFragment : Fragment() {
 
         binding.btnPreesnce.setOnClickListener {
             if (binding.radioOffice.isChecked){
-                Toast.makeText(requireContext(), "lat : " + endlat + " lng : " + endlng, Toast.LENGTH_SHORT).show()
-                binding.btnAbsence.visibility = View.VISIBLE
+                //inisiasi tujuan awal dan akhir
+                val start = Location("locationStart")
+                start.latitude = lat
+                start.longitude = lng
+                val end = Location("locationEnd")
+                end.latitude = endlat
+                end.longitude = endlng
+
+                //perhitungan jarak
+                var distance = start.distanceTo(end)
+                if (distance <= 25.0 && lat == 0.0 && lng == 0.0 || distance <= 25.0 || lat == 0.0 || lng == 0.0){
+                    Toast.makeText(requireContext(), "Presence is enable", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "Presence is unable", Toast.LENGTH_SHORT).show()
+                }
+
             }else if(binding.radioWfh.isChecked){
                 Toast.makeText(requireContext(), "your location mow at lat : " + lat + " lng : " + lng, Toast.LENGTH_SHORT).show()
             }
