@@ -29,7 +29,7 @@ interface ApiService {
     ): Single<PassChangeObject.PasschangeResponse>
 
     //API Endpoint untuk fitur post trackrec
-    @POST("tracrecord")
+    @POST("presence")
     @FormUrlEncoded
     fun post(
         @Field("post") post: String,

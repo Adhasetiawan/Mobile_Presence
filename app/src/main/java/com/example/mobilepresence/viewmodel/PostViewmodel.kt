@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mobilepresence.model.UiState
 import com.example.mobilepresence.model.persistablenetworkresourcecall.Resource
+import com.example.mobilepresence.model.repository.LoginRepository
 import com.example.mobilepresence.model.repository.PostRepository
 import com.example.mobilepresence.model.response.LocationObject
 import com.example.mobilepresence.model.response.PostObject
@@ -12,7 +13,11 @@ import com.example.mobilepresence.util.scheduler.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
-class PostViewmodel(val postRepository: PostRepository, val schedulerProvider: SchedulerProvider) :
+class PostViewmodel(
+    private val postRepository: PostRepository,
+    private val loginRepository: LoginRepository,
+    private val schedulerProvider: SchedulerProvider
+) :
     ViewModel() {
     private val compositeDisposables = CompositeDisposable()
 
@@ -23,6 +28,8 @@ class PostViewmodel(val postRepository: PostRepository, val schedulerProvider: S
     fun getPostResponse(): LiveData<UiState<PostObject.PostResponse>> {
         return postResponse
     }
+
+    fun getIdUser() = loginRepository.getId()
 
     //fungsi untuk menjalankan API post trackrec
     fun Post(
@@ -57,7 +64,7 @@ class PostViewmodel(val postRepository: PostRepository, val schedulerProvider: S
 
     fun getLocationResponse() = locationResponse
 
-    fun getLocation(id_location : Int) {
+    fun getLocation(id_location: Int) {
         postRepository.getLocation(id_location)
             .observeOn(schedulerProvider.ui())
             .subscribeOn(schedulerProvider.io())

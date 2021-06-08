@@ -12,5 +12,5 @@ val viewModelModule = module {
     viewModel { LoginViewmodel(get(), get()) }
     viewModel { ProfileViewModel(get()) }
     viewModel { PassChangeViewmodel(get(), get()) }
-    viewModel { PostViewmodel(get(), get()) }
+    viewModel { PostViewmodel(get(), get(), get()) }
 }
