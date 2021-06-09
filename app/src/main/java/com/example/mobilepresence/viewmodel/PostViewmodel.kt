@@ -7,6 +7,7 @@ import com.example.mobilepresence.model.UiState
 import com.example.mobilepresence.model.persistablenetworkresourcecall.Resource
 import com.example.mobilepresence.model.repository.LoginRepository
 import com.example.mobilepresence.model.repository.PostRepository
+import com.example.mobilepresence.model.response.AbsenceObject
 import com.example.mobilepresence.model.response.LocationObject
 import com.example.mobilepresence.model.response.PostObject
 import com.example.mobilepresence.util.scheduler.SchedulerProvider
@@ -58,6 +59,24 @@ class PostViewmodel(
             .subscribe({
                 postResponse.postValue(UiState.Success(it))
             }, { postResponse.postValue(UiState.Error(it)) }).addTo(compositeDisposables)
+    }
+
+    private val absenceResponse : MutableLiveData<UiState<AbsenceObject.AbsenceResponse>> = MutableLiveData()
+
+    fun getAbsenceResponse(): LiveData<UiState<AbsenceObject.AbsenceResponse>>{
+        return absenceResponse
+    }
+
+    fun absence(id_user: Int, date: String, leavingtime: String){
+        absenceResponse.postValue(UiState.Loading(true))
+        postRepository.absence(id_user, date, leavingtime)
+            .observeOn(schedulerProvider.ui())
+            .subscribeOn(schedulerProvider.io())
+            .subscribe({
+                absenceResponse.postValue(UiState.Success(it))
+            },{
+                absenceResponse.postValue(UiState.Error(it))
+            }).addTo(compositeDisposables)
     }
 
     private val locationResponse = MutableLiveData<Resource<LocationObject.LocationResponse>>()

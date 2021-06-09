@@ -1,9 +1,6 @@
 package com.example.mobilepresence.model
 
-import com.example.mobilepresence.model.response.LocationObject
-import com.example.mobilepresence.model.response.LoginObject
-import com.example.mobilepresence.model.response.PassChangeObject
-import com.example.mobilepresence.model.response.PostObject
+import com.example.mobilepresence.model.response.*
 import io.reactivex.Single
 import retrofit2.http.*
 import java.math.BigInteger
@@ -41,6 +38,15 @@ interface ApiService {
         @Field("location") location: String,
         @Field("id_user") id_user: Int
     ): Single<PostObject.PostResponse>
+    
+    //API Endpoint untuk fitur absence
+    @PUT("absence")
+    @FormUrlEncoded
+    fun absence(
+        @Field("id_user") id_user : Int,
+        @Field("date") date : String,
+        @Field("leavingtime") leavingtime : String
+    ): Single<AbsenceObject.AbsenceResponse>
 
     //API Endpoint untuk get location
     @GET("getlocation/{id_location}")

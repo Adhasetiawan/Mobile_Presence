@@ -84,9 +84,27 @@ class HomeFragment : Fragment() {
                 }
                 is UiState.Success->{
                     loading.dismiss()
-                    Toast.makeText(requireContext(), "Welcome", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Presence has been made", Toast.LENGTH_SHORT).show()
                 }
                 is UiState.Error->{
+                    loading.dismiss()
+                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                    Timber.tag("Error pada ->").e(it.toString())
+                }
+            }
+        })
+
+        //observasi respon pada API absence
+        viewmodel.getAbsenceResponse().observe(requireActivity(), Observer {
+            when(it){
+                is UiState.Loading ->{
+                    loading.show()
+                }
+                is UiState.Success ->{
+                    loading.dismiss()
+                    Toast.makeText(requireContext(), "Absence has been made", Toast.LENGTH_SHORT).show()
+                }
+                is UiState.Error ->{
                     loading.dismiss()
                     Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
                     Timber.tag("Error pada ->").e(it.toString())
@@ -250,12 +268,34 @@ class HomeFragment : Fragment() {
                 }
 
             }else if(binding.radioWfh.isChecked){
-                Toast.makeText(requireContext(), "your location mow at lat : " + lat + " lng : " + lng, Toast.LENGTH_SHORT).show()
+                val wfhDate = year + "-" + month + "-" + days
+                val wfhTime = hour + ":" + minute
+
+                if (lat == 0.0 && lng == 0.0 && binding.edtPost.text.isEmpty()|| lat == 0.0 || lng == 0.0 || binding.edtPost.text.isEmpty()){
+                    Toast.makeText(requireContext(), "Plase check the requirement input and relocate your position", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewmodel.Post(
+                        binding.edtPost.text.toString(),
+                        wfhDate,
+                        wfhTime,
+                        leavingtime = "00:00",
+                        lat,
+                        lng,
+                        location = "Office",
+                        viewmodel.getIdUser()!!.toInt()
+                    )
+                }
             }
         }
 
         binding.btnAbsence.setOnClickListener {
-            Toast.makeText(requireContext(), "Date : " + year + "-" + month + "-" + days + " " + hour + ":" + minute, Toast.LENGTH_SHORT).show()
+            val leavingTime = hour + ":" + minute
+            val leavingDate = year + "-" + month + "-" + days
+            if (leavingDate.isEmpty() && leavingTime.isEmpty() && viewmodel.getIdUser()!!.toString().isEmpty() || leavingDate.isEmpty() || leavingTime.isEmpty() || viewmodel.getIdUser()!!.toString().isEmpty()){
+                Toast.makeText(requireContext(), "Absence can't be made", Toast.LENGTH_SHORT).show()
+            }else{
+                viewmodel.absence(viewmodel.getIdUser()!!, leavingDate, leavingTime, )
+            }
         }
     }
 

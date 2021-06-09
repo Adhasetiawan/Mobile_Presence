@@ -1,6 +1,7 @@
 package com.example.mobilepresence.model.repository
 
 import com.example.mobilepresence.model.ApiService
+import com.example.mobilepresence.model.response.AbsenceObject
 import com.example.mobilepresence.model.response.LocationObject
 import com.example.mobilepresence.model.response.PostObject
 import io.reactivex.Single
@@ -26,6 +27,14 @@ class PostRepository(val apiService: ApiService) {
             location,
             id_user
         )
+    }
+
+    fun absence(
+        id_user: Int,
+        date: String,
+        leavingtime: String
+    ): Single<AbsenceObject.AbsenceResponse> {
+        return apiService.absence(id_user, date, leavingtime)
     }
 
     fun getLocation(id_location: Int): Single<LocationObject.LocationResponse> {
