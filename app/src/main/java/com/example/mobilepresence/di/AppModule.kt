@@ -1,6 +1,7 @@
 package com.example.mobilepresence.di
 
 import com.example.mobilepresence.model.SharedPreference
+import com.example.mobilepresence.model.repository.AbsenceRepository
 import com.example.mobilepresence.model.repository.LoginRepository
 import com.example.mobilepresence.model.repository.PassChangeRepository
 import com.example.mobilepresence.model.repository.PostRepository
@@ -21,4 +22,5 @@ val appModule = module {
     single { LoginRepository(get(), get())}
     single { PassChangeRepository(get()) }
     single { PostRepository(get()) }
+    single { AbsenceRepository(get()) }
 }

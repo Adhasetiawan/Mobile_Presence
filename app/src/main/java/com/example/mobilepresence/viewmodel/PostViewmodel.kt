@@ -22,38 +22,19 @@ class PostViewmodel(
     ViewModel() {
     private val compositeDisposables = CompositeDisposable()
 
-    //value yang di observe
-    private val postResponse: MutableLiveData<UiState<PostObject.PostResponse>> = MutableLiveData()
+    fun getIdUser() = loginRepository.getId()
+    fun getName () = loginRepository.getName()
 
-    //fungsi untuk menjalankan metode observasi pada value post trackrec
+    //variabel respon value presence
+    private val postResponse: MutableLiveData<UiState<PostObject.PostResponse>> = MutableLiveData()
+    //observasi variabel value presence
     fun getPostResponse(): LiveData<UiState<PostObject.PostResponse>> {
         return postResponse
     }
-
-    fun getIdUser() = loginRepository.getId()
-
-    //fungsi untuk menjalankan API post trackrec
-    fun Post(
-        post: String,
-        date: String,
-        arrivetime: String,
-        leavingtime: String,
-        latitude: Double,
-        longitude: Double,
-        location: String,
-        id_user: Int
-    ) {
+    //fungsi utama fitur presence
+    fun Post(post: String, date: String, arrivetime: String, leavingtime: String, latitude: Double, longitude: Double, location: String, id_user: Int) {
         postResponse.postValue(UiState.Loading(true))
-        postRepository.post(
-            post,
-            date,
-            arrivetime,
-            leavingtime,
-            latitude,
-            longitude,
-            location,
-            id_user
-        )
+        postRepository.post(post, date, arrivetime, leavingtime, latitude, longitude, location, id_user)
             .observeOn(schedulerProvider.ui())
             .subscribeOn(schedulerProvider.io())
             .subscribe({
@@ -61,28 +42,9 @@ class PostViewmodel(
             }, { postResponse.postValue(UiState.Error(it)) }).addTo(compositeDisposables)
     }
 
-    private val absenceResponse : MutableLiveData<UiState<AbsenceObject.AbsenceResponse>> = MutableLiveData()
-
-    fun getAbsenceResponse(): LiveData<UiState<AbsenceObject.AbsenceResponse>>{
-        return absenceResponse
-    }
-
-    fun absence(id_user: Int, date: String, leavingtime: String){
-        absenceResponse.postValue(UiState.Loading(true))
-        postRepository.absence(id_user, date, leavingtime)
-            .observeOn(schedulerProvider.ui())
-            .subscribeOn(schedulerProvider.io())
-            .subscribe({
-                absenceResponse.postValue(UiState.Success(it))
-            },{
-                absenceResponse.postValue(UiState.Error(it))
-            }).addTo(compositeDisposables)
-    }
-
+    //Setting lokasi
     private val locationResponse = MutableLiveData<Resource<LocationObject.LocationResponse>>()
-
     fun getLocationResponse() = locationResponse
-
     fun getLocation(id_location: Int) {
         postRepository.getLocation(id_location)
             .observeOn(schedulerProvider.ui())

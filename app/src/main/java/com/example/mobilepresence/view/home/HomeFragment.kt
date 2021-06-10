@@ -5,13 +5,12 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.mobilepresence.databinding.FragmentHomeBinding
 import com.example.mobilepresence.model.UiState
@@ -20,52 +19,48 @@ import com.example.mobilepresence.viewmodel.PostViewmodel
 import com.google.android.gms.location.*
 import org.koin.android.ext.android.inject
 import timber.log.Timber
-import java.util.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class HomeFragment : Fragment() {
 
     //viewmodel
-    private val viewmodel : PostViewmodel by inject()
+    private val viewmodel: PostViewmodel by inject()
 
-    //location
+    //inisialisasi metode getLocation untuk user
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
 
-    //defult location value
+    //inisialisasi variabel lokasi user
     private var lat = 0.0
     private var lng = 0.0
     private var endlat = 0.0
     private var endlng = 0.0
 
-    //default dateTime value
-    var days = "1"
-    var month = "1"
-    var year = "0"
-    var hour = "0"
-    var minute = "0"
+    //inisialisasi variabel tanggal dan waktu
+    var Date = ""
+    var Time = ""
 
     //layout
-    private var _binding : FragmentHomeBinding? = null
+    private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    //this is where i put the codes
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        //loading
-        val loading = ProgressDialog(requireContext())
-        loading.setMessage("Loading...")
-
         //observasi data lokasi pada repository
         viewmodel.getLocationResponse().observe(requireActivity(), Observer {
-            when(it){
-                is Resource.Loading -> {}
+            when (it) {
+                is Resource.Loading -> {
+                    binding.segaran.isRefreshing = false
+                }
                 is Resource.Success -> {
-                    it.data!!.location.forEach{
+                    it.data!!.location.forEach {
                         endlat = it.latitude
                         endlng = it.longitude
+//                        binding.txtDisatance.text = "lat : $endlat and lng : $endlng"
                     }
+                    binding.segaran.isRefreshing = false
                 }
                 is Resource.Error -> {
                     Timber.tag("cek pada ->").e("error pada => " + it)
@@ -76,76 +71,73 @@ class HomeFragment : Fragment() {
         //ambil data lokasi yang dituju
         viewmodel.getLocation(1)
 
-        //observasi respon pada API presence
-        viewmodel.getPostResponse().observe(requireActivity(), Observer {
-            when(it){
-                is UiState.Loading->{
-                    loading.show()
-                }
-                is UiState.Success->{
-                    loading.dismiss()
-                    Toast.makeText(requireContext(), "Presence has been made", Toast.LENGTH_SHORT).show()
-                }
-                is UiState.Error->{
-                    loading.dismiss()
-                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
-                    Timber.tag("Error pada ->").e(it.toString())
+        binding.btnPreesnce.setOnClickListener {
+            val dateTime = LocalDateTime.now()
+            val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+            val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            var presenceTime = dateTime.format(timeFormatter)
+            var presenceDate = dateTime.format(dateFormatter)
+
+            val start = Location("Start")
+            start.latitude = endlat
+            start.longitude = endlng
+
+            val end = Location("End")
+            end.latitude = lat
+            end.longitude = lng
+
+            var distance = start.distanceTo(end)
+            binding.txtDisatance.text = distance.toString() + " Meter"
+
+            if(binding.radioOffice.isChecked){
+                if (distance > 20.0 && binding.edtPost.text.isEmpty() || distance > 20.0 || binding.edtPost.text.isEmpty()){
+                    Toast.makeText(requireContext(), "Perhatikan data yang anda berikan dan jarak anda $lat $lng $endlat $endlng", Toast.LENGTH_SHORT).show()
+                }else{
+                    viewmodel.Post(binding.edtPost.text.toString(), presenceDate, presenceTime, "00:00", lat, lng, "Office", viewmodel.getIdUser()!!.toInt())
                 }
             }
-        })
 
-        //observasi respon pada API absence
-        viewmodel.getAbsenceResponse().observe(requireActivity(), Observer {
-            when(it){
-                is UiState.Loading ->{
-                    loading.show()
-                }
-                is UiState.Success ->{
-                    loading.dismiss()
-                    Toast.makeText(requireContext(), "Absence has been made", Toast.LENGTH_SHORT).show()
-                }
-                is UiState.Error ->{
-                    loading.dismiss()
-                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
-                    Timber.tag("Error pada ->").e(it.toString())
+            if (binding.radioWfh.isChecked){
+                if (binding.edtPost.text.isEmpty()){
+                    Toast.makeText(requireContext(), "Perhatikan data yang anda berikan", Toast.LENGTH_SHORT).show()
+                }else{
+                    viewmodel.Post(binding.edtPost.text.toString(), presenceDate, presenceTime, "00:00", lat, lng, "Office", viewmodel.getIdUser()!!.toInt())
                 }
             }
-        })
-
-        //inisialisasi hari dan waktu
-        val dateTime = Calendar.getInstance()
-
-        //date
-        val getDays = dateTime.get(Calendar.DAY_OF_MONTH)
-        val getMonth = dateTime.get(Calendar.MONTH).plus(1)
-        val getYear = dateTime.get(Calendar.YEAR)
-        year = getYear.toString()
-        if(getDays < 10 && getMonth < 10 || getDays < 10 || getMonth < 10){
-            days = getDays.toString().padStart(2, '0')
-            month = getMonth.toString().padStart(2, '0')
-        } else {
-            days = getDays.toString()
-            month = getMonth.toString()
         }
-
-        //time
-        val getHour = dateTime.get(Calendar.HOUR_OF_DAY)
-        val getMinute = dateTime.get(Calendar.MINUTE)
-        if (getHour < 10 && getMinute < 10 || getHour < 10 || getMinute < 10){
-            hour = getHour.toString().padStart(2, '0')
-            minute = getMinute.toString().padStart(2, '0')
-        }else{
-            hour = getHour.toString()
-            minute = getMinute.toString()
-        }
+        binding.txtName.text = "Hai,\n"  + viewmodel.getName()
 
         autolocate()
         relocate()
-        setact()
+        presenceResponse()
+    }
+
+    private fun presenceResponse(){
+        val loading = ProgressDialog(requireContext())
+        loading.setMessage("Loading...")
+
+        //observasi respon value pada API presence
+        viewmodel.getPostResponse().observe(requireActivity(), Observer {
+            when (it) {
+                is UiState.Loading -> {
+                    loading.show()
+                    binding.segaran.isRefreshing = false
+                }
+                is UiState.Success -> {
+                    loading.dismiss()
+                    binding.segaran.isRefreshing = false
+                }
+                is UiState.Error -> {
+                    loading.dismiss()
+                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
+                    Timber.tag("Error pada ->").e(it.toString())
+                }
+            }
+        })
     }
 
     //mendekteksi lokasi secara otomatis dan terus menerus
-    private fun autolocate(){
+    private fun autolocate() {
         //permission
         if (ActivityCompat.shouldShowRequestPermissionRationale(
                 requireActivity(),
@@ -161,7 +153,8 @@ class HomeFragment : Fragment() {
             buildLocationRequest()
             buildLocationCallback()
 
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+            fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(requireActivity())
 
             //trigger
             if (ActivityCompat.checkSelfPermission(
@@ -191,13 +184,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    //mendekteksi ulang lokasi user
-    private fun relocate(){
-        binding.btnLocate.setOnClickListener {
-            autolocate()
-        }
-    }
-
     //izin penggunaan fitur pada manifest
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -205,9 +191,11 @@ class HomeFragment : Fragment() {
             1000 -> {
                 if (grantResults.size > 0) {
                     if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
-                        Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
@@ -235,70 +223,15 @@ class HomeFragment : Fragment() {
         locationRequest.smallestDisplacement = 10f
     }
 
-    //fungsi utama pada fitur prensece dan absence
-    private fun setact(){
-        binding.btnPreesnce.setOnClickListener {
-            if (binding.radioOffice.isChecked){
-                //inisiasi tujuan awal dan akhir
-                val start = Location("locationStart")
-                start.latitude = lat
-                start.longitude = lng
-                val end = Location("locationEnd")
-                end.latitude = endlat
-                end.longitude = endlng
-
-                val date = year + "-" + month + "-" + days
-                val arrivetime = hour + ":" + minute
-
-                //perhitungan jarak
-                var distance = start.distanceTo(end)
-                if (distance >= 25.0 && lat == 0.0 && lng == 0.0 && binding.edtPost.text.isEmpty()|| distance >= 25.0 || lat == 0.0 || lng == 0.0 || binding.edtPost.text.isEmpty()){
-                    Toast.makeText(requireContext(), "Plase check the requirement input and relocate your position", Toast.LENGTH_SHORT).show()
-                } else {
-                    viewmodel.Post(
-                        binding.edtPost.text.toString(),
-                        date,
-                        arrivetime,
-                        leavingtime = "00:00",
-                        lat,
-                        lng,
-                        location = "Office",
-                        viewmodel.getIdUser()!!.toInt()
-                    )
-                }
-
-            }else if(binding.radioWfh.isChecked){
-                val wfhDate = year + "-" + month + "-" + days
-                val wfhTime = hour + ":" + minute
-
-                if (lat == 0.0 && lng == 0.0 && binding.edtPost.text.isEmpty()|| lat == 0.0 || lng == 0.0 || binding.edtPost.text.isEmpty()){
-                    Toast.makeText(requireContext(), "Plase check the requirement input and relocate your position", Toast.LENGTH_SHORT).show()
-                } else {
-                    viewmodel.Post(
-                        binding.edtPost.text.toString(),
-                        wfhDate,
-                        wfhTime,
-                        leavingtime = "00:00",
-                        lat,
-                        lng,
-                        location = "Office",
-                        viewmodel.getIdUser()!!.toInt()
-                    )
-                }
-            }
-        }
-
-        binding.btnAbsence.setOnClickListener {
-            val leavingTime = hour + ":" + minute
-            val leavingDate = year + "-" + month + "-" + days
-            if (leavingDate.isEmpty() && leavingTime.isEmpty() && viewmodel.getIdUser()!!.toString().isEmpty() || leavingDate.isEmpty() || leavingTime.isEmpty() || viewmodel.getIdUser()!!.toString().isEmpty()){
-                Toast.makeText(requireContext(), "Absence can't be made", Toast.LENGTH_SHORT).show()
-            }else{
-                viewmodel.absence(viewmodel.getIdUser()!!, leavingDate, leavingTime, )
-            }
+    //mendekteksi ulang lokasi user
+    private fun relocate() {
+        binding.segaran.setOnRefreshListener {
+            viewmodel.getLocation(1)
+            autolocate()
+            lat
+            lng
         }
     }
-
 
 
     //---fragment set up just ignore this---//

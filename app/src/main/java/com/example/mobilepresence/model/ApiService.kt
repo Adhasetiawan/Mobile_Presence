@@ -39,6 +39,12 @@ interface ApiService {
         @Field("id_user") id_user: Int
     ): Single<PostObject.PostResponse>
     
+    //API Endpoint untuk get location
+    @GET("getlocation/{id_location}")
+    fun getLocation(
+        @Path ("id_location") id_location : Int
+    ) : Single<LocationObject.LocationResponse>
+
     //API Endpoint untuk fitur absence
     @PUT("absence")
     @FormUrlEncoded
@@ -47,10 +53,4 @@ interface ApiService {
         @Field("date") date : String,
         @Field("leavingtime") leavingtime : String
     ): Single<AbsenceObject.AbsenceResponse>
-
-    //API Endpoint untuk get location
-    @GET("getlocation/{id_location}")
-    fun getLocation(
-        @Path ("id_location") id_location : Int
-    ) : Single<LocationObject.LocationResponse>
 }
