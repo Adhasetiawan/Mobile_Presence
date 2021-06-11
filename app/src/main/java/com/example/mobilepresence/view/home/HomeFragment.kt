@@ -48,6 +48,11 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val loading = ProgressDialog(requireContext())
+        loading.setMessage("Loading...")
+
+        val toast = Toast.makeText(requireContext(), "Request is success", Toast.LENGTH_SHORT)
+
         //observasi data lokasi pada repository
         viewmodel.getLocationResponse().observe(requireActivity(), Observer {
             when (it) {
@@ -71,6 +76,21 @@ class HomeFragment : Fragment() {
         //ambil data lokasi yang dituju
         viewmodel.getLocation(1)
 
+        viewmodel.getPostResponse().observe(requireActivity(), Observer{
+            when(it){
+                is UiState.Loading -> {
+                    loading.show()
+                }
+                is UiState.Success -> {
+                    loading.dismiss()
+                }
+                is UiState.Error -> {
+                    loading.dismiss()
+                    Timber.tag("Erorr pada ->").e(it.toString())
+                }
+            }
+        })
+
         binding.btnPreesnce.setOnClickListener {
             val dateTime = LocalDateTime.now()
             val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
@@ -91,17 +111,18 @@ class HomeFragment : Fragment() {
 
             if(binding.radioOffice.isChecked){
                 if (distance > 20.0 && binding.edtPost.text.isEmpty() || distance > 20.0 || binding.edtPost.text.isEmpty()){
-                    Toast.makeText(requireContext(), "Perhatikan data yang anda berikan dan jarak anda $lat $lng $endlat $endlng", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Perhatikan data yang anda berikan dan jarak anda", Toast.LENGTH_SHORT).show()
                 }else{
                     viewmodel.Post(binding.edtPost.text.toString(), presenceDate, presenceTime, "00:00", lat, lng, "Office", viewmodel.getIdUser()!!.toInt())
+                    binding.edtPost.text.clear()
                 }
             }
 
             if (binding.radioWfh.isChecked){
-                if (binding.edtPost.text.isEmpty()){
+                if (binding.edtPost.text.isEmpty() && lat == 0.0 && lng == 0.0 || binding.edtPost.text.isEmpty() || lat == 0.0 || lng == 0.0){
                     Toast.makeText(requireContext(), "Perhatikan data yang anda berikan", Toast.LENGTH_SHORT).show()
                 }else{
-                    viewmodel.Post(binding.edtPost.text.toString(), presenceDate, presenceTime, "00:00", lat, lng, "Office", viewmodel.getIdUser()!!.toInt())
+                    viewmodel.Post(binding.edtPost.text.toString(), presenceDate, presenceTime, "00:00", lat, lng, "Outstation", viewmodel.getIdUser()!!.toInt())
                 }
             }
         }
@@ -109,31 +130,6 @@ class HomeFragment : Fragment() {
 
         autolocate()
         relocate()
-        presenceResponse()
-    }
-
-    private fun presenceResponse(){
-        val loading = ProgressDialog(requireContext())
-        loading.setMessage("Loading...")
-
-        //observasi respon value pada API presence
-        viewmodel.getPostResponse().observe(requireActivity(), Observer {
-            when (it) {
-                is UiState.Loading -> {
-                    loading.show()
-                    binding.segaran.isRefreshing = false
-                }
-                is UiState.Success -> {
-                    loading.dismiss()
-                    binding.segaran.isRefreshing = false
-                }
-                is UiState.Error -> {
-                    loading.dismiss()
-                    Toast.makeText(requireContext(), "Something went wrong", Toast.LENGTH_SHORT).show()
-                    Timber.tag("Error pada ->").e(it.toString())
-                }
-            }
-        })
     }
 
     //mendekteksi lokasi secara otomatis dan terus menerus
