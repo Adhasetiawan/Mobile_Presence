@@ -8,6 +8,11 @@
         android:title="Home"/>
 
     <item
+        android:id="@+id/nav_absence"
+        android:icon="@drawable/ic_baseline_location_disabled_24"
+        android:title="Absence"/>
+
+    <item
         android:id="@+id/nav_tc"
         android:icon="@drawable/ic_baseline_access_time_24"
         android:title="Track Record"/>

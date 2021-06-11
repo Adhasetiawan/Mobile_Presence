@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.mobilepresence.R
 import com.example.mobilepresence.databinding.ActivityBottomNavBinding
+import com.example.mobilepresence.view.absence.AbsenceFragment
 import com.example.mobilepresence.view.home.HomeFragment
 import com.example.mobilepresence.view.profile.ProfileFragment
 import com.example.mobilepresence.view.trackrecord.TrackRecordFragment
@@ -15,6 +16,7 @@ class BottomNavActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBottomNavBinding
 
     private val homeFrag = HomeFragment()
+    private val absenceFrag = AbsenceFragment()
     private val trackRecFrag = TrackRecordFragment()
     private val profileFrag = ProfileFragment()
 
@@ -41,6 +43,10 @@ class BottomNavActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_home -> {
                     currentpage(homeFrag)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.nav_absence ->{
+                    currentpage(absenceFrag)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_tc -> {
