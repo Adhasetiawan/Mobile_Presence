@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/header_prof"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:background="@drawable/placer_three">
 
         <TextView
@@ -37,10 +37,10 @@
 
     <ImageView
         android:id="@+id/profile_pict_placer"
-        android:layout_width="90dp"
-        android:layout_height="99dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="90dp"
         android:layout_marginBottom="-50dp"
         android:background="@drawable/ic_baseline_person_24"
         android:scaleType="fitXY" />

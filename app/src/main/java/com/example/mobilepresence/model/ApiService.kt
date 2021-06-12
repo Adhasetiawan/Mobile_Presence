@@ -49,8 +49,8 @@ interface ApiService {
     @PUT("absence")
     @FormUrlEncoded
     fun absence(
-        @Field("id_user") id_user : Int,
+        @Field("leavingtime") leavingtime : String,
         @Field("date") date : String,
-        @Field("leavingtime") leavingtime : String
+        @Field("id_user") id_user : Int
     ): Single<AbsenceObject.AbsenceResponse>
 }

@@ -83,16 +83,16 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/icon_locate"
-                    android:text="Year-Month-Days" />
-                <TextView
+                    android:text="Tahun-Bulan-hari" />
+                <TextClock
+                    android:format24Hour="HH:mm:ss"
                     android:id="@+id/txt_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/icon_locate"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@id/txt_date"
-                    android:text="Hour:Minute" />
+                    android:layout_toRightOf="@id/txt_date"/>
                 <RadioGroup
                     android:layout_toRightOf="@id/icon_locate"
                     android:layout_below="@id/txt_date"
@@ -102,12 +102,12 @@
                     android:layout_height="wrap_content">
                     <RadioButton
                         android:id="@+id/radio_office"
-                        android:text="Office"
+                        android:text="Di Kantor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <RadioButton
                         android:id="@+id/radio_wfh"
-                        android:text="WFH/Outstation"
+                        android:text="Di luar kantor"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </RadioGroup>
@@ -139,7 +139,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp" />
                 <TextView
-                    android:text="Locate"
+                    android:text="Lokasi"
                     android:textColor="#ffffff"
                     android:layout_below="@+id/icon_absence"
                     android:layout_width="wrap_content"
@@ -173,7 +173,7 @@
             <Button
                 android:id="@+id/btn_preesnce"
                 android:textAllCaps="false"
-                android:text="Presence"
+                android:text="Hadir"
                 android:background="@drawable/button_style_three"
                 android:textColor="#ffffff"
                 android:layout_below="@id/placer_loacation"

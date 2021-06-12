@@ -15,12 +15,15 @@ import androidx.lifecycle.Observer
 import com.example.mobilepresence.databinding.FragmentHomeBinding
 import com.example.mobilepresence.model.UiState
 import com.example.mobilepresence.model.persistablenetworkresourcecall.Resource
+import com.example.mobilepresence.model.response.PostObject
 import com.example.mobilepresence.viewmodel.PostViewmodel
 import com.google.android.gms.location.*
+import org.jetbrains.anko.design.snackbar
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.Temporal
 
 class HomeFragment : Fragment() {
 
@@ -38,20 +41,16 @@ class HomeFragment : Fragment() {
     private var endlat = 0.0
     private var endlng = 0.0
 
-    //inisialisasi variabel tanggal dan waktu
-    var Date = ""
-    var Time = ""
-
     //layout
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private var responsePost : MutableList<PostObject.PostResponse> = mutableListOf()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val loading = ProgressDialog(requireContext())
         loading.setMessage("Loading...")
-
-        val toast = Toast.makeText(requireContext(), "Request is success", Toast.LENGTH_SHORT)
 
         //observasi data lokasi pada repository
         viewmodel.getLocationResponse().observe(requireActivity(), Observer {
@@ -63,7 +62,6 @@ class HomeFragment : Fragment() {
                     it.data!!.location.forEach {
                         endlat = it.latitude
                         endlng = it.longitude
-//                        binding.txtDisatance.text = "lat : $endlat and lng : $endlng"
                     }
                     binding.segaran.isRefreshing = false
                 }
@@ -91,13 +89,19 @@ class HomeFragment : Fragment() {
             }
         })
 
-        binding.btnPreesnce.setOnClickListener {
-            val dateTime = LocalDateTime.now()
-            val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-            val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            var presenceTime = dateTime.format(timeFormatter)
-            var presenceDate = dateTime.format(dateFormatter)
+//        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+//        var presenceTime = dateTime.format(timeFormatter)
 
+        val dateTime = LocalDateTime.now()
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+
+        var presenceDate = dateTime.format(dateFormatter)
+        var presenceTime = dateTime.format(timeFormatter)
+
+        binding.txtDate.text = presenceDate
+
+        binding.btnPreesnce.setOnClickListener {
             val start = Location("Start")
             start.latitude = endlat
             start.longitude = endlng
@@ -115,6 +119,7 @@ class HomeFragment : Fragment() {
                 }else{
                     viewmodel.Post(binding.edtPost.text.toString(), presenceDate, presenceTime, "00:00", lat, lng, "Office", viewmodel.getIdUser()!!.toInt())
                     binding.edtPost.text.clear()
+                    binding.btnPreesnce.snackbar("Silahkan cek data kehadiran anda pada halaman check out")
                 }
             }
 
@@ -123,6 +128,7 @@ class HomeFragment : Fragment() {
                     Toast.makeText(requireContext(), "Perhatikan data yang anda berikan", Toast.LENGTH_SHORT).show()
                 }else{
                     viewmodel.Post(binding.edtPost.text.toString(), presenceDate, presenceTime, "00:00", lat, lng, "Outstation", viewmodel.getIdUser()!!.toInt())
+                    binding.btnPreesnce.snackbar("Silahkan cek data kehadiran anda pada halaman check out")
                 }
             }
         }

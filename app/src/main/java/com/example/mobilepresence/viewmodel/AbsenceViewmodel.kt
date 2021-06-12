@@ -21,9 +21,9 @@ class AbsenceViewmodel(private val absenceRepository: AbsenceRepository, private
         return absenceResponse
     }
 
-    fun absence(id_user: Int, date: String, leavingtime : String){
+    fun absence(leavingtime : String, date : String, id_user : Int){
         absenceResponse.postValue(UiState.Loading(true))
-        absenceRepository.absence(id_user, date, leavingtime)
+        absenceRepository.absence(leavingtime,date, id_user)
             .observeOn(schedulerProvider.ui())
             .subscribeOn(schedulerProvider.io())
             .subscribe({
@@ -34,4 +34,5 @@ class AbsenceViewmodel(private val absenceRepository: AbsenceRepository, private
     }
 
     fun getIduser() = loginRepository.getId()
+    fun getName() = loginRepository.getName()
 }

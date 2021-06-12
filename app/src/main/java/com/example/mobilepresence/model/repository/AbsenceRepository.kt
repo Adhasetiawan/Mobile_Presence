@@ -5,7 +5,7 @@ import com.example.mobilepresence.model.response.AbsenceObject
 import io.reactivex.Single
 
 class AbsenceRepository (val apiService: ApiService) {
-    fun absence(id_user: Int, date : String, leavingtime : String) : Single<AbsenceObject.AbsenceResponse>{
-        return apiService.absence(id_user, date, leavingtime)
+    fun absence(leavingtime : String, date : String, id_user : Int) : Single<AbsenceObject.AbsenceResponse>{
+        return apiService.absence(leavingtime, date, id_user)
     }
 }
