@@ -74,6 +74,7 @@ class HomeFragment : Fragment() {
         //ambil data lokasi yang dituju
         viewmodel.getLocation(1)
 
+        //observasi response dari kelas viewmodel pada fitur presence
         viewmodel.getPostResponse().observe(requireActivity(), Observer{
             when(it){
                 is UiState.Loading -> {
@@ -89,19 +90,21 @@ class HomeFragment : Fragment() {
             }
         })
 
-//        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-//        var presenceTime = dateTime.format(timeFormatter)
-
+        //inisialisasi metode untuk mendapatkan tanggal dan jam
         val dateTime = LocalDateTime.now()
+        //format jam dan tanggal
         val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
+        //varibel dengan value tanggal dan jam
         var presenceDate = dateTime.format(dateFormatter)
         var presenceTime = dateTime.format(timeFormatter)
 
         binding.txtDate.text = presenceDate
 
+        //trigger API presence
         binding.btnPreesnce.setOnClickListener {
+            //perhitungan jarak lokasi user
             val start = Location("Start")
             start.latitude = endlat
             start.longitude = endlng
@@ -113,6 +116,7 @@ class HomeFragment : Fragment() {
             var distance = start.distanceTo(end)
             binding.txtDisatance.text = distance.toString() + " Meter"
 
+            //seleksi kondisi ketika absen dilakukan di kantor
             if(binding.radioOffice.isChecked){
                 if (distance > 20.0 && binding.edtPost.text.isEmpty() || distance > 20.0 || binding.edtPost.text.isEmpty()){
                     Toast.makeText(requireContext(), "Perhatikan data yang anda berikan dan jarak anda", Toast.LENGTH_SHORT).show()
@@ -123,6 +127,7 @@ class HomeFragment : Fragment() {
                 }
             }
 
+            //seleksi kondisi ketika absen dilakukan di luar kantor
             if (binding.radioWfh.isChecked){
                 if (binding.edtPost.text.isEmpty() && lat == 0.0 && lng == 0.0 || binding.edtPost.text.isEmpty() || lat == 0.0 || lng == 0.0){
                     Toast.makeText(requireContext(), "Perhatikan data yang anda berikan", Toast.LENGTH_SHORT).show()

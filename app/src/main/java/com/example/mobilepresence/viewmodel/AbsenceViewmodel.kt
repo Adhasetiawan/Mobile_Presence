@@ -15,12 +15,15 @@ class AbsenceViewmodel(private val absenceRepository: AbsenceRepository, private
 
     private val compositeDisposables = CompositeDisposable()
 
+    // variabel response dari API absence
     val absenceResponse : MutableLiveData<UiState<AbsenceObject.AbsenceResponse>> = MutableLiveData()
 
+    // fungsi untuk mendapatkan response dari variabel
     fun getAbsenceResponse () : LiveData<UiState<AbsenceObject.AbsenceResponse>>{
         return absenceResponse
     }
 
+    // fungsi untuk menjalankan API absence
     fun absence(leavingtime : String, date : String, id_user : Int){
         absenceResponse.postValue(UiState.Loading(true))
         absenceRepository.absence(leavingtime,date, id_user)

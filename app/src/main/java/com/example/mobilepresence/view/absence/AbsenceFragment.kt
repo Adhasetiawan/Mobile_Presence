@@ -12,6 +12,7 @@ import com.example.mobilepresence.viewmodel.AbsenceViewmodel
 import org.koin.android.ext.android.inject
 import androidx.lifecycle.Observer
 import com.example.mobilepresence.model.UiState
+import org.jetbrains.anko.design.snackbar
 import org.koin.androidx.scope.currentScope
 import java.sql.Time
 import java.time.DateTimeException
@@ -32,18 +33,21 @@ class AbsenceFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        // variabel dengan value respon data id user
         val id_user = viewmodel.getIduser()!!.toInt()
 
-        //date
+        //inisialisasi metode untuk tanggal
         val absence = LocalDateTime.now()
         val absenceDate = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         var date = absence.format(absenceDate)
 
+        // variabel waktu dengan masukan data dari layout textclock
         var time = binding.txtPresencetime.text.toString()
 
         val loading = ProgressDialog(requireContext())
         loading.setMessage("Loading...")
 
+        //observasi reponse dari API fitur absence
         viewmodel.getAbsenceResponse().observe(requireActivity(), Observer{
             when(it){
                 is UiState.Loading -> {
@@ -63,8 +67,10 @@ class AbsenceFragment : Fragment() {
             }
         })
 
+        //trigger api absence
         binding.btnAbsence.setOnClickListener {
             viewmodel.absence(time, date, id_user)
+            binding.btnAbsence.snackbar("Cek data kehadiran anda pada halaman track record")
         }
     }
 

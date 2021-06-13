@@ -22,6 +22,7 @@ class PostViewmodel(
     ViewModel() {
     private val compositeDisposables = CompositeDisposable()
 
+    //get Id dan user name
     fun getIdUser() = loginRepository.getId()
     fun getName () = loginRepository.getName()
 
