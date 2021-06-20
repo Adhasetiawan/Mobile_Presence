@@ -53,4 +53,13 @@ interface ApiService {
         @Field("date") date : String,
         @Field("id_user") id_user : Int
     ): Single<AbsenceObject.AbsenceResponse>
+
+    //APiI Endpoint untuk get trackrecord
+    @GET("trackrecord/{id_user}/{date_one}/{date_two}")
+    fun trackRecord(
+        @Path ("id_user") id_user : Int,
+        @Path ("date_one") date_one : String,
+        @Path ("date_two") date_two : String,
+        @Query("page") page : Int
+    ) : Single <RecordObject.ObjectResponse>
 }

@@ -1,21 +1,18 @@
 package com.example.mobilepresence.di
 
 import com.example.mobilepresence.model.SharedPreference
-import com.example.mobilepresence.model.repository.AbsenceRepository
-import com.example.mobilepresence.model.repository.LoginRepository
-import com.example.mobilepresence.model.repository.PassChangeRepository
-import com.example.mobilepresence.model.repository.PostRepository
+import com.example.mobilepresence.model.repository.*
 import com.example.mobilepresence.util.NetworkHelper
 import com.example.mobilepresence.util.scheduler.AppSchedulerProvider
 import com.example.mobilepresence.util.scheduler.SchedulerProvider
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import org.koin.dsl.module
 
 
 //respository masuk sini
 val appModule = module {
-    factory { GroupAdapter<ViewHolder>() }
+    factory { GroupAdapter<GroupieViewHolder>() }
     single<SchedulerProvider> { AppSchedulerProvider() }
     single { NetworkHelper(get()) }
     single { SharedPreference(get()) }
@@ -23,4 +20,5 @@ val appModule = module {
     single { PassChangeRepository(get()) }
     single { PostRepository(get()) }
     single { AbsenceRepository(get()) }
+    single { TrackRecordRepository(get(), get()) }
 }

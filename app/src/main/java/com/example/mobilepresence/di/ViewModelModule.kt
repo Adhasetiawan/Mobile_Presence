@@ -11,4 +11,5 @@ val viewModelModule = module {
     viewModel { PassChangeViewmodel(get(), get()) }
     viewModel { PostViewmodel(get(), get(), get()) }
     viewModel { AbsenceViewmodel(get(), get(), get()) }
+    viewModel { TrackRecordViewModel(get(), get(), get()) }
 }
