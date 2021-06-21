@@ -18,6 +18,7 @@ import com.example.mobilepresence.viewmodel.TrackRecordViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,14 +30,14 @@ class TrackRecordFragment : Fragment() {
     private var groupadapter : GroupAdapter<GroupieViewHolder> = GroupAdapter()
 
     private var listtr : MutableList<TrackRecord> = mutableListOf()
-    private val viewmodel : TrackRecordViewModel by inject()
+    private val viewmodel : TrackRecordViewModel by viewModel()
 
     private var calendar = Calendar.getInstance()
     private var date_one = ""
     private var date_two = ""
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val loading = ProgressDialog(requireContext())
         loading.setMessage("Loading")
@@ -55,8 +56,10 @@ class TrackRecordFragment : Fragment() {
                         loading.dismiss()
                         groupadapter.clear()
 
-                        record!!.forEach {
-                            groupadapter.add(TrackRecordItem(it))
+                        if (record != null) {
+                            record.forEach {
+                                groupadapter.add(TrackRecordItem(it))
+                            }
                         }
                         groupadapter.notifyDataSetChanged()
                         binding.segaran.isRefreshing = false
@@ -118,7 +121,13 @@ class TrackRecordFragment : Fragment() {
             ).show()
         }
 
-        viewmodel.getTrackRecord(viewmodel.id_user()!!, "2021-06-01", "2021-06-10", 1)
+        binding.btnSearch.setOnClickListener {
+            if (date_one.isEmpty() && date_two.isEmpty() || date_one.isEmpty() || date_two.isEmpty()){
+                Toast.makeText(requireContext(), "No date has been selected", Toast.LENGTH_SHORT).show()
+            }else{
+                viewmodel.getTrackRecord(viewmodel.id_user()!!, date_one, date_two, 1)
+            }
+        }
 
         initrv()
         funsegaran()
@@ -126,10 +135,9 @@ class TrackRecordFragment : Fragment() {
 
     fun funsegaran(){
         binding.segaran.setOnRefreshListener {
-            viewmodel.getTrackRecord(viewmodel.id_user()!!, "2021-06-01", "2021-06-10", 2)
+            viewmodel.getTrackRecord(viewmodel.id_user()!!, date_one, date_two, 2)
         }
     }
-
 
     private fun initrv(){
         binding.rvTr.apply {
