@@ -3,10 +3,12 @@ package com.example.mobilepresence.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.mobilepresence.model.UiState
 import com.example.mobilepresence.model.local.entity.TrackRecord
 import com.example.mobilepresence.model.persistablenetworkresourcecall.Resource
 import com.example.mobilepresence.model.repository.LoginRepository
 import com.example.mobilepresence.model.repository.TrackRecordRepository
+import com.example.mobilepresence.model.response.RecordObject
 import com.example.mobilepresence.util.scheduler.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -15,6 +17,9 @@ class TrackRecordViewModel(private val trackRecordRepository: TrackRecordReposit
     private val compositeDisposable = CompositeDisposable()
 
     fun id_user() = loginRepository.getId()
+
+    private val responseHeader : MutableLiveData<UiState<List<RecordObject.ObjectResponse>>> = MutableLiveData()
+    fun getResponseHeader() : LiveData<UiState<List<RecordObject.ObjectResponse>>> = responseHeader
 
     private val listTrackRecord : MutableLiveData<Resource<List<TrackRecord>>> = MutableLiveData()
     fun observeListTrackRecord(): LiveData<Resource<List<TrackRecord>>> = listTrackRecord

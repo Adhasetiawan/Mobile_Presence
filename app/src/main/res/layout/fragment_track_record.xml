@@ -87,6 +87,7 @@
             android:layout_toRightOf="@id/btn_search"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -96,6 +97,7 @@
             android:textColor="#ffffff"
             android:textStyle="bold"
             android:layout_toRightOf="@id/btn_search"
+            android:layout_marginBottom="3dp"
             android:layout_marginStart="140dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="20dp"
@@ -105,25 +107,29 @@
     </RelativeLayout>
 
     <!--recyclerview-->
-    <RelativeLayout
-        android:id="@+id/place_three"
-        android:layout_below="@+id/place_two"
-        android:layout_marginTop="10dp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/segaran"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/place_two"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/segaran"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_tr"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvTr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-    </RelativeLayout>
+                <ProgressBar
+                    android:id="@+id/proses"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp" />
+            </LinearLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
