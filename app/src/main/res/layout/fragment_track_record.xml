@@ -69,6 +69,7 @@
             android:id="@+id/txt_dateone"
             android:text="yyyy-mm-dd"
             android:textSize="16sp"
+            android:clickable="true"
             android:textStyle="bold"
             android:layout_marginStart="10dp"
             android:layout_marginTop="25dp"

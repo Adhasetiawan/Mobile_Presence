@@ -1,11 +1,13 @@
 package com.example.mobilepresence.view.trackrecord
 
+import android.app.DatePickerDialog
 import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +19,8 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import org.koin.android.ext.android.inject
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TrackRecordFragment : Fragment() {
 
@@ -27,10 +31,12 @@ class TrackRecordFragment : Fragment() {
     private var listtr : MutableList<TrackRecord> = mutableListOf()
     private val viewmodel : TrackRecordViewModel by inject()
 
+    private var calendar = Calendar.getInstance()
+    private var date_one = ""
+    private var date_two = ""
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        val id_user = viewmodel.id_user()
 
         val loading = ProgressDialog(requireContext())
         loading.setMessage("Loading")
@@ -64,10 +70,66 @@ class TrackRecordFragment : Fragment() {
             }
         })
 
-        viewmodel.getTrackRecord(id_user!!, "2021-06-01", "2021-06-07", 1)
+        //get date_one
+        val dateone = object : DatePickerDialog.OnDateSetListener{
+            override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                val dateformat = "yyyy-MM-dd"
+                val formatter = SimpleDateFormat(dateformat, Locale.ENGLISH)
+                date_one = formatter.format(calendar.time)
+                binding.txtDateone.text = date_one
+            }
+        }
+
+        //get date_two
+        val datetwo = object : DatePickerDialog.OnDateSetListener{
+            override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                val dateformat = "yyyy-MM-dd"
+                val formatter = SimpleDateFormat(dateformat, Locale.ENGLISH)
+                date_two = formatter.format(calendar.time)
+                binding.txtDatetwo.text = date_two
+            }
+        }
+
+        binding.txtDateone.setOnClickListener {
+            DatePickerDialog(
+                requireContext(),
+                dateone,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        binding.txtDatetwo.setOnClickListener {
+            DatePickerDialog(
+                requireContext(),
+                datetwo,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+        viewmodel.getTrackRecord(viewmodel.id_user()!!, "2021-06-01", "2021-06-10", 1)
 
         initrv()
+        funsegaran()
     }
+
+    fun funsegaran(){
+        binding.segaran.setOnRefreshListener {
+            viewmodel.getTrackRecord(viewmodel.id_user()!!, "2021-06-01", "2021-06-10", 2)
+        }
+    }
+
 
     private fun initrv(){
         binding.rvTr.apply {

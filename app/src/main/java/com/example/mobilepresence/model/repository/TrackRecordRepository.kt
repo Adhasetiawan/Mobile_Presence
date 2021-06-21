@@ -11,6 +11,7 @@ import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.Single
 import io.reactivex.rxkotlin.subscribeBy
+import timber.log.Timber
 import java.util.*
 
 class TrackRecordRepository(val apiService : ApiService, val trackRecordDao: TrackRecordDao) {
@@ -32,6 +33,7 @@ class TrackRecordRepository(val apiService : ApiService, val trackRecordDao: Tra
                     emitter.onNext(Resource.Error("data is empty", null))
                 }else{
                     response.trackrecord.let {
+                        Timber.d("input data" + it)
                         trackRecordDao.deleteAll()
 
                         val allData = it.map { data -> TrackRecord.from(data)}
@@ -41,6 +43,7 @@ class TrackRecordRepository(val apiService : ApiService, val trackRecordDao: Tra
                         .subscribeBy(
                             onNext = {
                                 emitter.onNext(Resource.Success(it))
+                                Timber.d("cek data -> " + it)
                             }
                         ))
                 }

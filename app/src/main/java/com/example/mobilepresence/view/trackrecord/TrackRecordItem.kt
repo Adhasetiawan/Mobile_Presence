@@ -6,14 +6,16 @@ import com.example.mobilepresence.databinding.ItemTrackrecordRowBinding
 import com.example.mobilepresence.model.local.entity.TrackRecord
 import com.xwray.groupie.viewbinding.BindableItem
 import java.time.LocalDate
+import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 class TrackRecordItem(val trackRecord : TrackRecord) : BindableItem<ItemTrackrecordRowBinding>() {
     val inputDate = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
     val outDate = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
-    val localDate = LocalDate.parse(trackRecord.date, inputDate)
-    var date: String = outDate.format(localDate)
+    val localDate = LocalDate.parse(trackRecord.date, inputDate).plusDays(1)
+    var date = outDate.format(localDate)
+
 
     override fun bind(viewBinding: ItemTrackrecordRowBinding, position: Int) {
         viewBinding.txtDaterecord.text = date
