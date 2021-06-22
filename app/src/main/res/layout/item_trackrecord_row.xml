@@ -21,6 +21,8 @@
             android:layout_height="25sp"/>
 
         <RelativeLayout
+            android:id="@+id/btn_moveItem"
+            android:clickable="true"
             android:layout_centerHorizontal="true"
             android:background="@drawable/button_style_two"
             android:layout_toRightOf="@id/icon_tr"

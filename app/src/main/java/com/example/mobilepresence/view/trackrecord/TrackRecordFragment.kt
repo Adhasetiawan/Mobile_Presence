@@ -2,6 +2,7 @@ package com.example.mobilepresence.view.trackrecord
 
 import android.app.DatePickerDialog
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +17,8 @@ import com.example.mobilepresence.databinding.FragmentTrackRecordBinding
 import com.example.mobilepresence.model.UiState
 import com.example.mobilepresence.model.local.entity.TrackRecord
 import com.example.mobilepresence.model.persistablenetworkresourcecall.Resource
+import com.example.mobilepresence.view.detailtrackrecord.DetailTrackRecordActivity
+import com.example.mobilepresence.view.passchange.PassChangeActivity
 import com.example.mobilepresence.viewmodel.TrackRecordViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -62,7 +65,13 @@ class TrackRecordFragment : Fragment() {
 
                         if (record != null) {
                             record.forEach { 
-                                groupadapter.add(TrackRecordItem(it))
+                                groupadapter.add(TrackRecordItem(it, object : TrackRecordItem.OnMoveItem{
+                                    override fun moveSelectedItem(selectedItem: TrackRecord, position: Int) {
+                                        val intent = Intent(requireContext(), DetailTrackRecordActivity::class.java)
+                                        intent.putExtra("date", selectedItem.date)
+                                        startActivity(intent)
+                                    }
+                                }))
                             }
                             }
                         }

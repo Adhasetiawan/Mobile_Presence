@@ -21,4 +21,5 @@ val appModule = module {
     single { PostRepository(get()) }
     single { AbsenceRepository(get()) }
     single { TrackRecordRepository(get(), get()) }
+    single { DetailRespository(get()) }
 }

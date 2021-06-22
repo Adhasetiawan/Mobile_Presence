@@ -12,4 +12,5 @@ val viewModelModule = module {
     viewModel { PostViewmodel(get(), get(), get()) }
     viewModel { AbsenceViewmodel(get(), get(), get()) }
     viewModel { TrackRecordViewModel(get(), get(), get()) }
+    viewModel { DetailTrackRecordViewModel(get(), get(), get()) }
 }

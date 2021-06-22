@@ -61,4 +61,11 @@ interface ApiService {
         @Path ("date_one") date_one : String,
         @Path ("date_two") date_two : String
     ) : Single <RecordObject.TrackrecordResponse>
+    
+    //API Endpoint untuk trackrecord secara detail
+    @GET("detailrec/{date}/{id_user}")
+    fun detailRec (
+        @Path ("date") date : String,
+        @Path ("id_user") id_user : Int
+    ) : Single <DetailObject.DetailResponse>
 }
