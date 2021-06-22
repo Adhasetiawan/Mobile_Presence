@@ -59,7 +59,6 @@ interface ApiService {
     fun trackRecord(
         @Path ("id_user") id_user : Int,
         @Path ("date_one") date_one : String,
-        @Path ("date_two") date_two : String,
-        @Query("page") page : Int
-    ) : Single <RecordObject.ObjectResponse>
+        @Path ("date_two") date_two : String
+    ) : Single <RecordObject.TrackrecordResponse>
 }

@@ -18,13 +18,13 @@ class TrackRecordViewModel(private val trackRecordRepository: TrackRecordReposit
 
     fun id_user() = loginRepository.getId()
 
-    private val responseHeader : MutableLiveData<UiState<List<RecordObject.ObjectResponse>>> = MutableLiveData()
-    fun getResponseHeader() : LiveData<UiState<List<RecordObject.ObjectResponse>>> = responseHeader
+    private val responseHeader : MutableLiveData<UiState<List<RecordObject.TrackrecordResponse>>> = MutableLiveData()
+    fun getResponseHeader() : LiveData<UiState<List<RecordObject.TrackrecordResponse>>> = responseHeader
 
     private val listTrackRecord : MutableLiveData<Resource<List<TrackRecord>>> = MutableLiveData()
     fun observeListTrackRecord(): LiveData<Resource<List<TrackRecord>>> = listTrackRecord
-    fun getTrackRecord(id_user:Int, date_one:String, date_two:String, page:Int){
-        trackRecordRepository.getListTrackRecord(id_user, date_one, date_two, page)
+    fun getTrackRecord(id_user:Int, date_one:String, date_two:String){
+        trackRecordRepository.getListTrackRecord(id_user, date_one, date_two)
             .observeOn(schedulerProvider.ui())
             .subscribeOn(schedulerProvider.io())
             .subscribe ({

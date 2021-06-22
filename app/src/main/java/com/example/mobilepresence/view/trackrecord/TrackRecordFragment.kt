@@ -38,9 +38,6 @@ class TrackRecordFragment : Fragment() {
     private var date_one = ""
     private var date_two = ""
 
-    private var page = 1
-    private var isLoading = false
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,20 +55,21 @@ class TrackRecordFragment : Fragment() {
                     }
                 }
                 is Resource.Success -> {
-                    it.successData.let { record->
+                    it.successData.let { record ->
                         if (listtr.isEmpty()) listtr.clear()
                         loading.dismiss()
                         groupadapter.clear()
 
                         if (record != null) {
-                            record.forEach {
+                            record.forEach { 
                                 groupadapter.add(TrackRecordItem(it))
+                            }
                             }
                         }
                         groupadapter.notifyDataSetChanged()
                         binding.segaran.isRefreshing = false
                     }
-                }
+
                 is Resource.Error -> {
                     loading.dismiss()
                     Toast.makeText(requireContext(), "Terjadi Kesalahan", Toast.LENGTH_SHORT).show()
@@ -132,24 +130,9 @@ class TrackRecordFragment : Fragment() {
             if (date_one.isEmpty() && date_two.isEmpty() || date_one.isEmpty() || date_two.isEmpty()){
                 Toast.makeText(requireContext(), "No date has been selected", Toast.LENGTH_SHORT).show()
             }else{
-                viewmodel.getTrackRecord(viewmodel.id_user()!!, date_one, date_two, page)
+                viewmodel.getTrackRecord(viewmodel.id_user()!!, date_one, date_two)
             }
         }
-
-        binding.rvTr.addOnScrollListener(object  : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val currentItemCount = LinearLayoutManager(requireContext()).childCount
-                val passItemVisible = LinearLayoutManager(requireContext()).findFirstCompletelyVisibleItemPosition()
-                var total = groupadapter.itemCount
-
-                Timber.d("jumlah $currentItemCount")
-
-                if (currentItemCount + passItemVisible >= total){
-                    viewmodel.getTrackRecord(viewmodel.id_user()!!, date_one, date_two, page++)
-                }
-            }
-        })
 
         initrv()
         funsegaran()
@@ -157,7 +140,7 @@ class TrackRecordFragment : Fragment() {
 
     fun funsegaran(){
         binding.segaran.setOnRefreshListener {
-            viewmodel.getTrackRecord(viewmodel.id_user()!!, date_one, date_two, 1)
+            viewmodel.getTrackRecord(viewmodel.id_user()!!, date_one, date_two)
         }
     }
 

@@ -15,24 +15,24 @@ import timber.log.Timber
 import java.util.*
 
 class TrackRecordRepository(val apiService : ApiService, val trackRecordDao: TrackRecordDao) {
-    fun getListTrackRecord(id_user : Int, date_one : String, date_two : String, page : Int) : Observable<Resource<List<TrackRecord>>>{
-        return object : PersistableNetworkResourceCall<RecordObject.ObjectResponse, List<TrackRecord>>(){
+    fun getListTrackRecord(id_user : Int, date_one : String, date_two : String) : Observable<Resource<List<TrackRecord>>>{
+        return object : PersistableNetworkResourceCall<RecordObject.TrackrecordResponse, List<TrackRecord>>(){
             override fun loadFromDatabase(): Maybe<List<TrackRecord>> {
                 return trackRecordDao.findAllTrackRecor()
             }
 
-            override fun createNetworkCall(): Single<RecordObject.ObjectResponse> {
-                return apiService.trackRecord(id_user, date_one, date_two, page)
+            override fun createNetworkCall(): Single<RecordObject.TrackrecordResponse> {
+                return apiService.trackRecord(id_user, date_one, date_two)
             }
 
             override fun onNetworkCallSuccess(
                 emitter: ObservableEmitter<Resource<List<TrackRecord>>>,
-                response: RecordObject.ObjectResponse
+                response: RecordObject.TrackrecordResponse
             ) {
-                if(response.trackrecord.isEmpty()){
+                if(response.Trackrecord.isEmpty()){
                     emitter.onNext(Resource.Error("data is empty", null))
                 }else{
-                    response.trackrecord.let {
+                    response.Trackrecord.let {
                         Timber.d("input data" + it)
                         trackRecordDao.deleteAll()
 
