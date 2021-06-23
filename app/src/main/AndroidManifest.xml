@@ -19,7 +19,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".view.detailtrackrecord.DetailTrackRecordActivity"
-            android:theme="@style/CleanHead" />
+            android:theme="@style/CleanHead"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".view.passchange.PassChangeActivity"
             android:theme="@style/CleanHead" />

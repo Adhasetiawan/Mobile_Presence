@@ -68,4 +68,13 @@ interface ApiService {
         @Path ("date") date : String,
         @Path ("id_user") id_user : Int
     ) : Single <DetailObject.DetailResponse>
+
+    //API Endpoint untuk edit kegiatan user
+    @PUT("editact")
+    @FormUrlEncoded
+    fun editAct(
+        @Field ("date") date : String,
+        @Field ("post") post : String,
+        @Field ("id_user") id_user : Int,
+    ) : Single <EditObject.EditResponse>
 }

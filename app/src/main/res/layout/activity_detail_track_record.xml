@@ -235,6 +235,7 @@
             android:hint="kegiatan anda"
             android:drawableEnd="@drawable/ic_baseline_laptop_windows_24"
             android:layout_margin="10dp"
+            android:adjustViewBounds="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
