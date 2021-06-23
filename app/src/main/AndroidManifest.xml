@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.detailtrackrecord.DetailTrackRecordActivity"></activity>
+        <activity
+            android:name=".view.detailtrackrecord.DetailTrackRecordActivity"
+            android:theme="@style/CleanHead" />
         <activity
             android:name=".view.passchange.PassChangeActivity"
             android:theme="@style/CleanHead" />

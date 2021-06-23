@@ -1,18 +1,18 @@
 package com.example.mobilepresence.view.detailtrackrecord
 
 import android.app.ProgressDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ProgressBar
+import android.text.method.ScrollingMovementMethod
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.mobilepresence.databinding.ActivityDetailTrackRecordBinding
+import com.example.mobilepresence.model.persistablenetworkresourcecall.Resource
 import com.example.mobilepresence.viewmodel.DetailTrackRecordViewModel
-import org.jetbrains.anko.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import androidx.lifecycle.Observer
-import com.example.mobilepresence.model.persistablenetworkresourcecall.Resource
 import java.util.*
+
 
 class DetailTrackRecordActivity : AppCompatActivity() {
 
@@ -27,6 +27,8 @@ class DetailTrackRecordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailTrackRecordBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.txtAct.setMovementMethod(ScrollingMovementMethod())
 
         val loading = ProgressDialog(this)
         loading.setMessage("Loading...")
@@ -56,9 +58,5 @@ class DetailTrackRecordActivity : AppCompatActivity() {
         })
 
         viewmodel.getResponseTrackRecord(dateoutput, viewmodel.id_user()!!)
-
-        binding.btnTest.setOnClickListener {
-            toast("data kiriman yang diterima adalah $dateoutput dan lokasi anda lat $lat lng $lng")
-        }
     }
 }
