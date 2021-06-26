@@ -69,7 +69,7 @@
         android:layout_below="@id/btn_absence"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:text="Selamat jalan, Adha setiawan"
+        android:text="Selamat jalan"
         android:textAlignment="center"
         android:textSize="14dp" />
 
