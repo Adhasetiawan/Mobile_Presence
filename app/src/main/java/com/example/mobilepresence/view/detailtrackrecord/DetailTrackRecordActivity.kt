@@ -81,7 +81,10 @@ class DetailTrackRecordActivity : AppCompatActivity() {
                         binding.txtIduser.text = viewmodel.id_user().toString()
                     }
                 }
-                is Resource.Error -> {}
+                is Resource.Error -> {
+                    loading.dismiss()
+                    Timber.e(it.msg)
+                }
             }
         })
 
