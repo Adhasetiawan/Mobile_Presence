@@ -13,7 +13,7 @@ import java.util.*
 class TrackRecordItem(val trackRecord : TrackRecord, private val listener : OnMoveItem) : BindableItem<ItemTrackrecordRowBinding>() {
     val inputDate = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
     val outDate = DateTimeFormatter.ofPattern("dd-MM-yyyy", Locale.ENGLISH)
-    val localDate = LocalDate.parse(trackRecord.date, inputDate).plusDays(1)
+    val localDate = LocalDate.parse(trackRecord.date, inputDate)
     var date = outDate.format(localDate)
 
 

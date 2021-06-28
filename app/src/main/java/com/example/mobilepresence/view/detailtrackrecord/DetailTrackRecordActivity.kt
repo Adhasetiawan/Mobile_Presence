@@ -45,7 +45,7 @@ class DetailTrackRecordActivity : AppCompatActivity() {
         val dateinput = intent.getStringExtra("date")
         val inputDate = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
         val outDate = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
-        val localDate = LocalDate.parse(dateinput, inputDate).plusDays(1)
+        val localDate = LocalDate.parse(dateinput, inputDate)
         var dateoutput = outDate.format(localDate)
 
         val current = LocalDateTime.now()
@@ -60,9 +60,12 @@ class DetailTrackRecordActivity : AppCompatActivity() {
                 is Resource.Success -> {
                     loading.dismiss()
                     it.successData.let {
+
+                        Timber.d("datanya $it")
+
                         val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
                         val outputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
-                        val input = LocalDate.parse(it?.detail?.date, inputFormat).plusDays(1)
+                        val input = LocalDate.parse(it?.detail?.date, inputFormat)
                         val output = outputFormat.format(input)
 
                         if (output != checkDate){
