@@ -53,7 +53,7 @@ class PassChangeActivity : AppCompatActivity() {
         val intent = intent
 
         //mendapatkan data yang sudah di intent
-        val id_user = intent.getStringExtra("id_user").toInt()
+        val id_user = intent.getStringExtra("id_user")!!.toInt()
         val image_user = intent.getStringExtra("image")
 
         //load image url pada server
